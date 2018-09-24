@@ -2,7 +2,7 @@
 export default class Scope {
 	constructor(canvas) {
 		this.canvas = canvas;
-		this.cell = 10;
+		this.cell = 50;
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.scale = 1;
@@ -12,6 +12,10 @@ export default class Scope {
 		this.hStart = 0;
 		this.hEnd = 0;
 		this.hCellExtra = 0;
+		
+		this.width = 0;
+		this.height = 0;
+		
 		this.refresh();
 	}
 	
@@ -29,6 +33,9 @@ export default class Scope {
 		this.wCellExtra = (this.canvas.height - h) / 2;
 		this.hStart = this.cell + this.hCellExtra;
 		this.hEnd = h + this.hCellExtra - this.canvas.height % this.cell;
+		
+		this.width = this.wEnd - this.wStart;
+		this.height = this.hEnd - this.hStart;
 	}
 	
 	/**

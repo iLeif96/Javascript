@@ -1,7 +1,10 @@
 'use strict';
+import {MPoint} from "./Point.js";
+import {CPoint} from "./Point.js";
 import Scope from "./Area/Scope.js";
 import GroundMatrix from "./Area/GroundMatrix.js";
 import Draw from  "./Draw/DrawMain.js";
+import Objects from "./Objects/Objects.js";
 
 /*
  * Декларация глобальных объектов
@@ -10,6 +13,7 @@ let canvas;
 let ctx;
 let scope;
 let groundMatrix;
+let objects;
 let draw;
 
 let main = function () {
@@ -23,8 +27,15 @@ let main = function () {
 	
 	scope = new Scope(canvas);
 	groundMatrix = new GroundMatrix(canvas, scope);
-	draw = new Draw(ctx, scope, groundMatrix);
+	objects = new Objects();
+	draw = new Draw(ctx, scope, groundMatrix, objects.createdObjects);
 	
+	
+	/**
+	 * Создание персонажей
+	 */
+	let player = new objects.chars.Player("Васяныч", new MPoint(1, 1));
+	objects.addCharacter(player);
 	
     setStartingProperties();
     draw.draw();
@@ -33,12 +44,14 @@ let main = function () {
 let setStartingProperties = function() {
 	/**
 	 * Для быстрого перевода координат
+	 * @return {number};
 	 */
 	Number.prototype.getX = function () {
 		return scope.getX(this.valueOf())
 	};
 	/**
 	 * Для быстрого перевода координат
+	 * @return {number};
 	 */
 	Number.prototype.getY = function () {
 		return scope.getY(this.valueOf())

@@ -1,4 +1,4 @@
-let drawGround = function(ctx, scope) {
+export let drawGround = function(ctx, scope) {
 	ctx.strokeStyle = 'rgb(220, 230, 250)';
 	
 	for (let w = scope.wStart.getX() + 0.5; w <= scope.wEnd.getX() + 0.5; w += scope.cell * scope.scale) {
@@ -15,5 +15,3 @@ let drawGround = function(ctx, scope) {
 		ctx.stroke();
 	}
 };
-
-export {drawGround};
