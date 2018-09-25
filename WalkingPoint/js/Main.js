@@ -1,52 +1,46 @@
 'use strict';
 import {MPoint} from "./Point.js";
 import {CPoint} from "./Point.js";
-import Scope from "./Area/Scope.js";
-import GroundMatrix from "./Area/GroundMatrix.js";
-import Draw from  "./Draw/DrawMain.js";
-import Objects from "./Objects/Objects.js";
-import Tick from "./Tick.js";
+import Global from "./Global.js";
+import tick from "./Tick.js";
 
-/*
- * Декларация глобальных объектов
+/**
+ * Декларация глобального объекта
+ * @type {Global}
  */
-let canvas;
-let ctx;
-let scope;
-let groundMatrix;
-let objects;
-let draw;
+let global;
 
 let main = function () {
 	/*
-	 * Объявление глобальных объектов
+	 * Объявление глобального объекта
 	 */
-	canvas = document.getElementById("canv");
-	canvas.width = document.body.offsetWidth;
-	canvas.height = document.body.offsetHeight;
-	ctx = canvas.getContext("2d");
-	
-	scope = new Scope(canvas);
-	groundMatrix = new GroundMatrix(canvas, scope);
-	objects = new Objects();
-	draw = new Draw(ctx, scope, groundMatrix, objects.createdObjects);
-	
+	global = new Global();
 	
 	/**
 	 * Создание персонажей
 	 */
-	let player = new objects.chars.Player("Васяныч", new MPoint(1, 1));
-	objects.addCharacter(player);
+	let player = new global.objects.chars.Player("Васяныч", new MPoint(1, 1));
+	global.objects.addCharacter(player);
 	
-	let enemy0 = new objects.chars.Enemy("Факингович", groundMatrix.getMPoint(new CPoint(300, 300)));
-	objects.addCharacter(enemy0);
+	let enemy0 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(300, 300)));
+	global.objects.addCharacter(enemy0);
 	
-	let enemy1 = new objects.chars.Enemy("Факингович", groundMatrix.getMPoint(new CPoint(500, 500)));
-	objects.addCharacter(enemy1);
+	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(500, 500)));
+	global.objects.addCharacter(enemy1);
 	
     setStartingProperties();
-    draw.draw();
+	
+    //Для теста
+	document.onmousemove = function(ev) {
+		player.position = global.groundMatrix.getMPoint(new CPoint(ev.clientX, ev.clientY));
+		global.draw.draw();
+		
+	};
+	
+	global.draw.draw();
 };
+
+
 
 let setStartingProperties = function() {
 	/**
@@ -54,14 +48,14 @@ let setStartingProperties = function() {
 	 * @return {number};
 	 */
 	Number.prototype.getX = function () {
-		return scope.getX(this.valueOf())
+		return global.scope.getX(this.valueOf())
 	};
 	/**
 	 * Для быстрого перевода координат
 	 * @return {number};
 	 */
 	Number.prototype.getY = function () {
-		return scope.getY(this.valueOf())
+		return global.scope.getY(this.valueOf())
 	};
 	
 };

@@ -2,7 +2,7 @@
 export default class Scope {
 	constructor(canvas) {
 		this.canvas = canvas;
-		this.cell = 50;
+		this.cell = 10;
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.scale = 1;
