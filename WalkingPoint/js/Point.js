@@ -7,6 +7,10 @@ class Point {
 		this.y = y;
 		this.type = "Point";
 	}
+	
+	clone() {
+		return new Point(this.x, this.y)	
+	}
 }
 
 /**
@@ -16,6 +20,10 @@ export class MPoint extends Point{
 	constructor(x, y) {
 		super(x, y);
 		this.type = "MPoint";
+	}
+	
+	clone() {
+		return new MPoint(this.x, this.y)
 	}
 	
 	/**
@@ -48,12 +56,14 @@ export class MPoint extends Point{
 /**
  * Позиция в координатах для отрисовки в непереведенных координатах
  */
-export class CPoint {
+export class CPoint extends Point {
 	constructor(x, y) {
-		this.x = x;
-		this.y = y;
-		this.mPoint = null;
-		this.type = "СPoint";
+		super(x, y);
+		this.type = "CPoint";
+	}
+	
+	clone() {
+		return new CPoint(this.x, this.y)
 	}
 	
 	/**

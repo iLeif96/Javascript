@@ -9,6 +9,9 @@ export  default class SimpleObject {
 		this.color = "rgb(30, 30, 30)"
 	}
 	
+	
+	//От этого надо избавиться
+	
 	/*
 		Просто макросы для получения координат
 	 */
