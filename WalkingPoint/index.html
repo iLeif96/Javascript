@@ -1,19 +1,17 @@
 <html >
     <head>
-        <style>
-            body {
-                padding: 0;
-                margin: 0;
-            }
-            #canv {
-                margin: 0 auto;
-            }
-        </style>
+        <link type="text/css" rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <canvas id="canv">
+    <div class="mainContainer" id = "mainContainer">
+        <div class="canvasContainer" id = "canvasContainer">
+            <canvas class="canvas" id="groundCanvas"></canvas>
+            <canvas class="canvas" id="objectsCanvas"></canvas>
+        </div>
+        <div class="statusBar" id="statusBar">
 
-        </canvas>
+        </div>
+    </div>
         <script src="js/Main.js" type="module" defer></script>
     </body>
 

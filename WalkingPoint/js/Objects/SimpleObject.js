@@ -1,14 +1,44 @@
-import {MPoint} from "../Point.js";
+import Cell from "../Cell.js";
+import {EventAbleObject} from "../Events.js";
+import Periodic from "../Periodic.js";
 
-export  default class SimpleObject {
-	constructor(name = "Object", position = new MPoint(0, 0), hp = 100) {
+export default class SimpleObject extends Periodic {
+	constructor(name = "Object", position, hp = 100) {
+		super();
 		this.name = name;
 		this.position = position;
 		this.hp = hp;
 		this.type = "SimpleObject";
-		this.color = "rgb(30, 30, 30)"
+		this.color = "rgb(30, 30, 30)";
+		this.die = false;
+		
+		this.born();
 	}
 	
+	/**
+	 * Вызывается при создании объекта
+	 */
+	born() {
+		this.die = false;
+		console.log("Shh: *", this.name);
+	}
+	
+	/**
+	 * Вызывается при смерти объекта
+	 */
+	die() {
+		this.die = true;
+		console.log("Shh: *", this.name)
+	}
+	
+	/**
+	 * Периодично вызываемая функция
+	 */
+	tick() {
+		if (this.hp <= 0) {
+			this.die();
+		}
+	}
 	
 	//От этого надо избавиться
 	

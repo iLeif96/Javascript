@@ -1,5 +1,5 @@
 import {CPoint, MPoint} from  "../Point.js";
-import MatrixCell from  "./GroundMatrixCell.js";
+import Cell from "../Cell.js";
 
 export default class GroundMatrix extends Array {
 	constructor (canvas, scope) {
@@ -15,10 +15,10 @@ export default class GroundMatrix extends Array {
 		let i, j;
 		for (i = 0; i * scope.cell < (scope.width); i++) {
 			this[i] = [];
-			for (j = 0; j * scope.cell < (scope.hEnd - scope.hStart); j ++) {
-				let x = (scope.cell * i) + scope.wStart;
-				let y = (scope.cell * j) + scope.hStart;
-				this[i][j] = new MatrixCell(new MPoint(i, j), new CPoint(x, y), this.scope.cell);
+			for (j = 0; j * scope.cell < (scope.width); j ++) {
+				let x = (scope.cell * i);
+				let y = (scope.cell * j);
+				this[i][j] = new Cell(new MPoint(i, j), new CPoint(x, y), this.scope);
 			}
 		}
 		
@@ -59,7 +59,7 @@ export default class GroundMatrix extends Array {
 	/**
 	 * Передает ячейку матрицы
 	 * @param point {Point}
-	 * @returns cell: {MatrixCell}
+	 * @returns cell: {Cell}
 	*/
 	getCell(point) {
 		let cell = undefined;
@@ -71,7 +71,7 @@ export default class GroundMatrix extends Array {
 			}
 			case "CPoint": {
 				let xLenght = this.xLenght;
-				let yLenght = this.yLenght
+				let yLenght = this.yLenght;
 				
 				rows: for (let i = 0; i < xLenght; i++) {
 					columns: for (let j = 0; j < yLenght; j++) {

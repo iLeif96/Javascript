@@ -15,12 +15,15 @@ let main = function () {
 	 * Объявление глобального объекта
 	 */
 	global = new Global();
+	setStartingProperties();
 	
 	/**
 	 * Создание персонажей
 	 */
-	let player = new global.objects.chars.Player("Васяныч", new MPoint(1, 1));
+	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(new MPoint(1, 1)));
 	global.objects.addCharacter(player);
+	global.userActivity.movePlayerOnClick(player);
+	global.AI.addAI(player, global.AI.BaseAI);
 	
 	let enemy0 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(300, 300)));
 	global.objects.addCharacter(enemy0);
@@ -28,16 +31,9 @@ let main = function () {
 	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(500, 500)));
 	global.objects.addCharacter(enemy1);
 	
-    setStartingProperties();
+	requestAnimationFrame(global.draw.draw.bind(global.draw));
+	setInterval(tick.bind(this, global), 10);
 	
-    //Для теста
-	document.onmousemove = function(ev) {
-		player.position = global.groundMatrix.getMPoint(new CPoint(ev.clientX, ev.clientY));
-		global.draw.draw();
-		
-	};
-	
-	global.draw.draw();
 };
 
 
@@ -58,6 +54,20 @@ let setStartingProperties = function() {
 		return global.scope.getY(this.valueOf())
 	};
 	
+	/**
+	 * Для быстрого перевода координат
+	 * @return {number};
+	 */
+	Number.prototype.getNormalX = function () {
+		return global.scope.getNormalX(this.valueOf())
+	};
+	/**
+	 * Для быстрого перевода координат
+	 * @return {number};
+	 */
+	Number.prototype.getNormalY = function () {
+		return global.scope.getNormalY(this.valueOf())
+	};
 };
 
 main();

@@ -1,41 +1,33 @@
 'use strict';
+/**
+ * Задает параметры поля для отрисовки
+ */
 export default class Scope {
-	constructor(canvas) {
+	constructor(canvas, events) {
 		this.canvas = canvas;
-		this.cell = 10;
+		this.cell = 20;
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.scale = 1;
-		this.wStart = 0;
-		this.wEnd = 0;
-		this.wCellExtra = 0;
-		this.hStart = 0;
-		this.hEnd = 0;
-		this.hCellExtra = 0;
 		
 		this.width = 0;
 		this.height = 0;
 		
-		this.refresh();
+		this.initialisation(events);
 	}
 	
 	/**
 	 * Обновить данные
 	 */
-	refresh() {
-		
-		let w = (this.canvas.width - this.cell * 2) ;
-		this.wCellExtra = (this.canvas.width - w) / 2;
-		this.wStart = this.cell + this.wCellExtra;
-		this.wEnd = w + this.wCellExtra - this.canvas.width % this.cell;
-		
-		let h = (this.canvas.height - this.cell * 2);
-		this.wCellExtra = (this.canvas.height - h) / 2;
-		this.hStart = this.cell + this.hCellExtra;
-		this.hEnd = h + this.hCellExtra - this.canvas.height % this.cell;
-		
-		this.width = this.wEnd - this.wStart;
-		this.height = this.hEnd - this.hStart;
+	initialisation(events) {
+		this.resize();
+		events.addEvent("resize", this.canvas, this.resize);
+	}
+	
+	resize() {
+		this.width = this.canvas.width;
+		this.height = this.canvas.height;
+		this.canvas.globalChanges = true;
 	}
 	
 	/**
