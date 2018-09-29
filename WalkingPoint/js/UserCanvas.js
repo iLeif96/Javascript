@@ -77,16 +77,22 @@ export default class UserCanvas extends EventAbleObject{
 		this.groundContext = this.groundCanvas.getContext("2d");
 		this.objectsContext = this.objectsCanvas.getContext("2d");
 		
-		/*
-			Установка размеров канваса
-		 */
-		this.resize();
+		
+		this.refresh();
+		
 		events.addEvent("resize", this, this.resize);
 		
 		/*
 			Нужно для задания функции-обработчика
 		 */
 		this.HTMLElement = this.canvasContainer;
+	}
+	
+	/**
+	 * Функция для обновления изменений
+	 */
+	refresh()  {
+		this.resize();
 	}
 	
 	/**

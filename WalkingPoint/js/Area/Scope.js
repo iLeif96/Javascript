@@ -10,6 +10,9 @@ export default class Scope {
 		this.deltaY = 0;
 		this.scale = 1;
 		
+		this.wStart = 0;
+		this.hStart = 0;
+		
 		this.width = 0;
 		this.height = 0;
 		
@@ -20,10 +23,21 @@ export default class Scope {
 	 * Обновить данные
 	 */
 	initialisation(events) {
-		this.resize();
+		this.setCanvasSize();
+		this.refresh();
 		events.addEvent("resize", this.canvas, this.resize);
 	}
 	
+	/**
+	 * Обновление объекта
+	 */
+	refresh() {
+		this.resize();
+	}
+	
+	/**
+	 * Изменение размеров поля
+	 */
 	resize() {
 		this.width = this.canvas.width;
 		this.height = this.canvas.height;
@@ -31,29 +45,41 @@ export default class Scope {
 	}
 	
 	/**
+	 * Установить размер холста в зависимости от размера поля
+	 */
+	setCanvasSize() {
+		this.canvas.canvasContainer.style.width = (this.canvas.width - (this.canvas.width % this.cell)) + "px";
+		this.canvas.canvasContainer.style.height = (this.canvas.height - (this.canvas.height % this.cell)) + "px";
+		this.wStart = this.canvas.canvasContainer.offsetTop;
+		this.hStart = this.canvas.canvasContainer.offsetHeight;
+		this.canvas.refresh();
+		
+	}
+	
+	/**
 	 * Получает координату с масштаброванием и смещением по X;
 	 */
 	getX(x) {
-		return (x + this.deltaX) * this.scale;
+		return (x + this.deltaX - this.wStart) * this.scale;
 	};
 	/**
 	 * Получает координату с масштаброванием и смещением по Y;
 	 */
 	getY(y) {
-		return (y + this.deltaY) * this.scale;
+		return (y + this.deltaY - this.hStart) * this.scale;
 	};
 	
 	 /**
 	 * Получает координату с обнуленным масштаброванием и смещением по X;
 	 */
 	getNormalX(x) {
-		return (x / this.scale - this.deltaX) ;
+		return (x / this.scale - this.deltaX + this.wStart) ;
 	};
 	/**
 	 * Получает координату с обнуленным масштаброванием и смещением по Y;
 	 */
 	getNormalY(y) {
-		return (y / this.scale - this.deltaY);
+		return (y / this.scale - this.deltaY + this.hStart);
 	};
 };
 
