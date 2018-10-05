@@ -41,6 +41,11 @@ export default class Draw {
 		
 	};
 	
+	setRequestAnimationFrame() {
+		this.draw();
+		requestAnimationFrame(this.draw.bind(this));
+	}
+	
 	/**
 	 * Очистка либо всего поля, либо одного холста
 	 * @param canvas {HTMLCanvasElement}

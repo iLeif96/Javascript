@@ -59,7 +59,7 @@ export default class GroundMatrix extends Array {
 	/**
 	 * Передает ячейку матрицы
 	 * @param point {Point}
-	 * @returns cell: {Cell}
+	 * @returns Cell: {Cell}
 	*/
 	getCell(point) {
 		let cell = undefined;

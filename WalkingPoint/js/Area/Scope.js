@@ -50,8 +50,8 @@ export default class Scope {
 	setCanvasSize() {
 		this.canvas.canvasContainer.style.width = (this.canvas.width - (this.canvas.width % this.cell)) + "px";
 		this.canvas.canvasContainer.style.height = (this.canvas.height - (this.canvas.height % this.cell)) + "px";
-		this.wStart = this.canvas.canvasContainer.offsetTop;
-		this.hStart = this.canvas.canvasContainer.offsetHeight;
+		this.hStart = this.canvas.canvasContainer.offsetTop;
+		this.wStart = this.canvas.canvasContainer.offsetHeight;
 		this.canvas.refresh();
 		
 	}
@@ -60,26 +60,26 @@ export default class Scope {
 	 * Получает координату с масштаброванием и смещением по X;
 	 */
 	getX(x) {
-		return (x + this.deltaX - this.wStart) * this.scale;
+		return (x + this.deltaX) * this.scale;
 	};
 	/**
 	 * Получает координату с масштаброванием и смещением по Y;
 	 */
 	getY(y) {
-		return (y + this.deltaY - this.hStart) * this.scale;
+		return (y + this.deltaY) * this.scale;
 	};
 	
 	 /**
 	 * Получает координату с обнуленным масштаброванием и смещением по X;
 	 */
 	getNormalX(x) {
-		return (x / this.scale - this.deltaX + this.wStart) ;
+		return (x / this.scale - this.deltaX)  ;
 	};
 	/**
 	 * Получает координату с обнуленным масштаброванием и смещением по Y;
 	 */
 	getNormalY(y) {
-		return (y / this.scale - this.deltaY + this.hStart);
+		return (y / this.scale - this.deltaY) ;
 	};
 };
 

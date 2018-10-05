@@ -4,6 +4,7 @@ export default class Cell {
 		this.cPoint = cPoint;
 		this.scope = scope;
 		this.border = {leftTop: null, rightDown: null};
+		this.type = "Cell";
 		this.setBorder();
 	}
 	

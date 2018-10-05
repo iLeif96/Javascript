@@ -5,12 +5,17 @@ export default class Character extends SimpleObject {
 		super(name = "Character", position, hp);
 		this.type = "Character";
 		this.color = "rgb(150, 150, 150)";
-		this.speed = 100;
+		this.speed = 10;
 		/**
 		 * Цель перемещения игрока
-		 * @Type {Cell}
+		 * @Type {Array} Cell
 		 */
-		this.targetPosition = null;
+		this.targetPosition = [];
+		
+		/**
+		 * Должен ли персонаж пересчитать траекторию движения
+		 */
+		this.forceMove = false;
 		
 		/**
 		 * Цель перемещения игрока
@@ -20,13 +25,8 @@ export default class Character extends SimpleObject {
 	}
 	
 	/**
-	 * Помечает точку, в которую нужно идти
-	 * @param cell {Cell}
+	 * Периодически вызываемая функция
 	 */
-	moveToCell(cell) {
-		this.targetPosition = cell
-	}
-	
 	tick() {
 		super.tick();
 		
@@ -34,4 +34,14 @@ export default class Character extends SimpleObject {
 			this.AI.tick();
 		}
 	}
+	
+	/**
+	 * Записывает точку, в которую персонаж должен переместиться
+	 * @param targetPosition {Cell}
+	 * @param forceMove {boolean}
+	 */
+	setTargetPosition(targetPosition, forceMove = true) {
+		this.targetPosition.push(targetPosition);
+		this.forceMove = forceMove;
+	};
 };

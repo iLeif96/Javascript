@@ -31,8 +31,8 @@ let main = function () {
 	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(500, 500)));
 	global.objects.addCharacter(enemy1);
 	
-	requestAnimationFrame(global.draw.draw.bind(global.draw));
-	setInterval(tick.bind(this, global), 10);
+	global.draw.setRequestAnimationFrame();
+	setInterval(tick.bind(this, global), 1);
 	
 };
 
