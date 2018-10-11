@@ -1,11 +1,11 @@
 import SimpleObject from "../SimpleObject.js";
 
 export default class Character extends SimpleObject {
-	constructor(name, position, hp) {
-		super(name = "Character", position, hp);
+	constructor(name = "Character", position, speed = 200, hp) {
+		super(name, position, hp);
 		this.type = "Character";
 		this.color = "rgb(150, 150, 150)";
-		this.speed = 10;
+		this.speed = speed;
 		/**
 		 * Цель перемещения игрока
 		 * @Type {Array} Cell
@@ -22,8 +22,16 @@ export default class Character extends SimpleObject {
 		 * @Type {BaseAI}
 		 */
 		this.AI = null;
+		
+		/**
+		 * Как далеко видит персонаж (в клетках)
+		 */
+		this.visionRadius = 3;
 	}
 	
+	born() {
+		console.log("I`m born and my name is", this.name);
+	}
 	/**
 	 * Периодически вызываемая функция
 	 */
@@ -33,6 +41,12 @@ export default class Character extends SimpleObject {
 		if (this.AI !== null) {
 			this.AI.tick();
 		}
+		else {
+			if (this.targetPosition.length !== 0) {
+				this.position = this.targetPosition[0];
+				this.targetPosition.shift();
+			}
+		}
 	}
 	
 	/**
@@ -41,6 +55,9 @@ export default class Character extends SimpleObject {
 	 * @param forceMove {boolean}
 	 */
 	setTargetPosition(targetPosition, forceMove = true) {
+		if (forceMove) {
+			this.targetPosition = [targetPosition];
+		}
 		this.targetPosition.push(targetPosition);
 		this.forceMove = forceMove;
 	};

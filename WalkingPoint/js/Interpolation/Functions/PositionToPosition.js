@@ -24,6 +24,8 @@ export default function positionToPosition(gM, position1, position2) {
 	let step = mPt1.clone();
 	let pathCell;
 	
+	try { path.push(gM.getCell(step)); }
+	catch (e) { }
 	
 	for (let i = 1; i <= (xSteps); i++) {
 		step.x = mPt1.x + i * xDir;

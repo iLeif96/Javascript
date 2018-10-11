@@ -8,6 +8,15 @@ class Point {
 		this.type = "Point";
 	}
 	
+	/**
+	 * Сравниввает две точки
+	 * @param point {Point}
+	 * @return {boolean}
+	 */
+	compare(point) {
+		return (this.x === point.x && this.y === point.y);
+	}
+	
 	clone() {
 		return new Point(this.x, this.y)	
 	}
@@ -18,7 +27,7 @@ class Point {
  */
 export class MPoint extends Point{
 	constructor(x, y) {
-		super(x, y);
+		super(Math.floor(x), Math.floor(y));
 		this.type = "MPoint";
 	}
 	

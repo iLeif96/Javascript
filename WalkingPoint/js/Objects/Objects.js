@@ -10,12 +10,20 @@ import _RoughWall from "./Walls/RoughWall.js";
  * Основной класс для создания и хранения объектов;
  */
 export default class Objects {
-	constructor() {
+	constructor(groundMatrix) {
+		this.groundMatrix = groundMatrix;
+		
 		/**
 		 Список доступных персонажей
 		 */
 		this.chars = {
+			/**
+			 * @type Player
+			 */
 			Player: _Player,
+			/**
+			 * @type Enemy
+			 */
 			Enemy: _Enemy,
 		};
 		
@@ -33,6 +41,8 @@ export default class Objects {
 			createdCharacter: [],
 			createdWalls: [],
 		};
+		
+		this.forId = 0;
 	}
 	
 	/**
@@ -41,6 +51,9 @@ export default class Objects {
 	 */
 	addCharacter(character) {
 		this.createdObjects.createdCharacter.push(character);
+		character.id = this.forId++;
+		this.groundMatrix[character.position.mPoint.x][character.position.mPoint.y].placed[character.id] = character;
+		
 	}
 	
 	/**
@@ -48,6 +61,9 @@ export default class Objects {
 	 * @param wall
 	 */
 	addWall(wall) {
-		this.createdObjects.createdCharacter.push(wall);
+		this.createdObjects.createdWalls.push(wall);
+		wall.id = this.forId++;
+		this.groundMatrix[wall.position.mPoint.x][wall.position.mPoint.y].placed[wall.id] = wall;
+		
 	}
 }

@@ -1,10 +1,9 @@
 import Character from "./Character.js";
 
 export default class Player extends Character {
-	constructor(name, position, hp) {
-		super(name, position, hp);
+	constructor(name = "Player", position, speed = 400, hp) {
+		super(name, position, speed, hp);
 		this.type = "Player";
 		this.color = "rgb(190, 200, 220)";
-		this.speed = 10;
 	}
 }

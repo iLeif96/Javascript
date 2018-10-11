@@ -6,7 +6,7 @@ import Cell from "./Cell.js";
 export default class Path extends Array {
 	constructor(...args) {
 		if (args.length > 0) {
-			super(args);
+			super(...args);
 		}
 		else {
 			super();
@@ -19,4 +19,41 @@ export default class Path extends Array {
 		this.currentPositionInPath = 0;
 	}
 	
+	/**
+	 * Вуернуть текущую позицию и отправиться к следующей
+	 * @return {Cell}
+	 */
+	next() {
+		return this[this.currentPositionInPath++];
+	}
+	
+	/**
+	 * Вуернуть текущую позицию
+	 * @return {Cell}
+	 */
+	now() {
+		return this[this.currentPositionInPath];
+	}
+	
+	/**
+	 * Вернуть текущую часть пути, состоящую из двух точек
+	 *  @return Path
+	 */
+	nowPath() {
+		if (this[this.currentPositionInPath + 1])
+			return new Path(this[this.currentPositionInPath], this[this.currentPositionInPath + 1]);
+		else
+			return null;
+	}
+	
+	/**
+	 * Вернуть текущую часть пути, состоящую из двух точек и перейти на следующую позицию
+	 *  @return Path
+	 */
+	nextPath() {
+		if (this.currentPositionInPath < this.length)
+			return new Path(this[this.currentPositionInPath], this[++this.currentPositionInPath]);
+		else
+			return null;
+	}
 }

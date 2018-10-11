@@ -17,22 +17,32 @@ let main = function () {
 	global = new Global();
 	setStartingProperties();
 	
+	
 	/**
 	 * Создание персонажей
 	 */
-	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(new MPoint(1, 1)));
-	global.objects.addCharacter(player);
+	let mid = new MPoint(global.groundMatrix.xLenght / 2, global.groundMatrix.yLenght / 2);
+	// mid.x = 3; mid.y = 2;
+	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(mid));
 	global.userActivity.movePlayerOnClick(player);
 	global.AI.addAI(player, global.AI.BaseAI);
+	global.objects.addCharacter(player);
 	
-	let enemy0 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(300, 300)));
+	let enemy0 = new global.objects.chars.Enemy("Жопадрызгович", global.groundMatrix.getCell(new MPoint(1, 3)));
+	//global.userActivity.movePlayerOnClick(enemy0);
+	global.AI.addAI(enemy0, global.AI.SimpleEnemyAI);
 	global.objects.addCharacter(enemy0);
-	
-	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getMPoint(new CPoint(500, 500)));
+
+	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(1, 5)), 170);
 	global.objects.addCharacter(enemy1);
+	//global.userActivity.movePlayerOnClick(enemy1);
+	global.AI.addAI(enemy1, global.AI.SimpleEnemyAI);
+	
+	//console.log(player.speed, enemy0.speed, enemy1.speed);
 	
 	global.draw.setRequestAnimationFrame();
-	setInterval(tick.bind(this, global), 1);
+	//let tickWorker = new Worker("Tick.js");
+	setInterval(tick.bind(this, global), 4);
 	
 };
 

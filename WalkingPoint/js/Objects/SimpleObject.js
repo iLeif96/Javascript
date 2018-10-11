@@ -6,12 +6,13 @@ export default class SimpleObject extends Periodic {
 	constructor(name = "Object", position, hp = 100) {
 		super();
 		this.name = name;
+		this.lastPosition = position.clone();
 		this.position = position;
 		this.hp = hp;
 		this.type = "SimpleObject";
 		this.color = "rgb(30, 30, 30)";
+		this.id = 0;
 		this.die = false;
-		
 		this.born();
 	}
 	

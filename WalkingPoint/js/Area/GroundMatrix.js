@@ -12,12 +12,10 @@ export default class GroundMatrix extends Array {
 	}
 	
 	create(canvas, scope) {
-		let i, j;
-		for (i = 0; i * scope.cell < (scope.width); i++) {
+		let i, j, x, y;
+		for (i = 0; (x = i * scope.cell) < (scope.width); i++) {
 			this[i] = [];
-			for (j = 0; j * scope.cell < (scope.width); j ++) {
-				let x = (scope.cell * i);
-				let y = (scope.cell * j);
+			for (j = 0; (y = j * scope.cell) < (scope.height); j ++) {
 				this[i][j] = new Cell(new MPoint(i, j), new CPoint(x, y), this.scope);
 			}
 		}
@@ -82,6 +80,7 @@ export default class GroundMatrix extends Array {
 						//Если ячейка совпадает, то выходим из цикла 
 						if (match.total) {
 							cell = this[i][j];
+							//cell.cPoint = point.clone();
 							break rows;
 						}
 						//Если нет, то проверяем в какой строчке/столбе совпадение
@@ -92,6 +91,7 @@ export default class GroundMatrix extends Array {
 									match = this[i][col].checkCross(point);
 									if (match.total) {
 										cell = this[i][col];
+										//cell.cPoint = point.clone();
 										break rows;
 									}
 								}
@@ -103,6 +103,7 @@ export default class GroundMatrix extends Array {
 									match = this[row][j].checkCross(point);
 									if (match.total) {
 										cell = this[row][j];
+										//cell.cPoint = point.clone();
 										break rows;
 									}
 								}
@@ -116,7 +117,7 @@ export default class GroundMatrix extends Array {
 		}
 		
 		if (!cell) throw "Point not found";
-		return cell;
+		return cell.clone();
 	}
 	
 	
