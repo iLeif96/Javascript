@@ -61,7 +61,7 @@ export default class BaseAI extends Periodic{
 	
 	toTargetPosition() {
 		if (this.character.targetPosition.length > 0) {
-			if (this.path === null || this.character.forceMove === true) {
+			if ((this.path === null || this.character.forceMove === true) && this.anim === null) {
 				this.path = Interpolation.positionToPosition(this.groundMatrix, this.character.position, this.character.targetPosition[0]);
 				this.character.forceMove = false;
 			}
