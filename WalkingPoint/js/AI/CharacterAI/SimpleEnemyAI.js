@@ -144,6 +144,7 @@ export default class SimpleEnemyAI extends BaseAI {
 	
 	/**
 	 * Возвращает случайную ячейку поля для патрулирования
+	 *
 	 */
 	getRandomCell(character, gM) {
 		let xRangeMin = Math.max(0, character.position.x - character.visionRadius);

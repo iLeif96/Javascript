@@ -21,7 +21,7 @@ let main = function () {
 	/**
 	 * Создание персонажей
 	 */
-	let mid = new MPoint(global.groundMatrix.xLenght / 2, global.groundMatrix.yLenght / 2);
+	let mid = new MPoint(9, 9);
 	// mid.x = 3; mid.y = 2;
 	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(mid));
 	global.userActivity.movePlayerOnClick(player);
@@ -37,7 +37,7 @@ let main = function () {
 	global.objects.addCharacter(enemy1);
 	//global.userActivity.movePlayerOnClick(enemy1);
 	global.AI.addAI(enemy1, global.AI.SimpleEnemyAI);
-	
+
 	let enemy2 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(10, 5)), 130);
 	enemy2.decency = 70;
 	enemy2.color = "rgb(192, 168, 0)";
