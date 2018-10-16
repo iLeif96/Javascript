@@ -23,7 +23,7 @@ export default class UserActivity {
 	 */
 	movePlayerOnClick(player) {
 		this.events.addEvent("click", this.canvas, (ev) => {
-			player.setTargetPosition(this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())));
+			player.setTargetPosition(this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), true);
 			//console.log(player.targetPosition);
 		});
 	}

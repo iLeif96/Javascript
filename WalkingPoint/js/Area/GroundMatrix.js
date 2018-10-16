@@ -1,5 +1,5 @@
 import {CPoint, MPoint} from  "../Point.js";
-import Cell from "../Cell.js";
+import {GroundCell} from "../Cell.js";
 
 export default class GroundMatrix extends Array {
 	constructor (canvas, scope) {
@@ -16,7 +16,7 @@ export default class GroundMatrix extends Array {
 		for (i = 0; (x = i * scope.cell) < (scope.width); i++) {
 			this[i] = [];
 			for (j = 0; (y = j * scope.cell) < (scope.height); j ++) {
-				this[i][j] = new Cell(new MPoint(i, j), new CPoint(x, y), this.scope);
+				this[i][j] = new GroundCell(new MPoint(i, j), new CPoint(x, y), this.scope);
 			}
 		}
 		
@@ -41,7 +41,7 @@ export default class GroundMatrix extends Array {
 	
 	/**
 	 * Передает точку матричных координат ячейки
-	 * @param CPoint {CPoint}
+	 * @param cPoint {CPoint}
 	 * @returns {MPoint}
 	*/
 	getMPoint(cPoint) {
@@ -68,11 +68,11 @@ export default class GroundMatrix extends Array {
 				break;
 			}
 			case "CPoint": {
-				let xLenght = this.xLenght;
-				let yLenght = this.yLenght;
+				let xLength = this.xLenght;
+				let yLength = this.yLenght;
 				
-				rows: for (let i = 0; i < xLenght; i++) {
-					columns: for (let j = 0; j < yLenght; j++) {
+				rows: for (let i = 0; i < xLength; i++) {
+					columns: for (let j = 0; j < yLength; j++) {
 						
 						//Проверяем пересечения
 						let match = this[i][j].checkCross(point);
@@ -87,7 +87,7 @@ export default class GroundMatrix extends Array {
 						else {
 							//Если в строчке, то ищем только в этой строчке:
 							if (match.xMatch) {
-								subRow: for (let col = j; col < yLenght; col++) { 
+								subRow: for (let col = j; col < yLength; col++) {
 									match = this[i][col].checkCross(point);
 									if (match.total) {
 										cell = this[i][col];
@@ -99,7 +99,7 @@ export default class GroundMatrix extends Array {
 							}
 							//Если в столбе, то ищем только в этом столбе:
 							else if (match.yMatch) {
-								subColumns: for (let row = i; row < xLenght; row++) { 
+								subColumns: for (let row = i; row < xLength; row++) {
 									match = this[row][j].checkCross(point);
 									if (match.total) {
 										cell = this[row][j];

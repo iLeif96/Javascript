@@ -1,4 +1,4 @@
-import Cell from "../Cell.js";
+import {Cell} from "../Cell.js";
 import {EventAbleObject} from "../Events.js";
 import Periodic from "../Periodic.js";
 
@@ -12,7 +12,7 @@ export default class SimpleObject extends Periodic {
 		this.type = "SimpleObject";
 		this.color = "rgb(30, 30, 30)";
 		this.id = 0;
-		this.die = false;
+		this.isDie = false;
 		this.born();
 	}
 	
@@ -20,7 +20,7 @@ export default class SimpleObject extends Periodic {
 	 * Вызывается при создании объекта
 	 */
 	born() {
-		this.die = false;
+		this.isDie = false;
 		console.log("Shh: *", this.name);
 	}
 	
@@ -28,16 +28,25 @@ export default class SimpleObject extends Periodic {
 	 * Вызывается при смерти объекта
 	 */
 	die() {
-		this.die = true;
+		this.isDie = true;
 		console.log("Shh: *", this.name)
+	}
+	
+	/**
+	 * Для удара по чему-то
+	 */
+	hit(damage, puncher) {
+		this.hp -= damage;
 	}
 	
 	/**
 	 * Периодично вызываемая функция
 	 */
 	tick() {
-		if (this.hp <= 0) {
-			this.die();
+		if (!this.isDie) {
+			if (this.hp <= 0) {
+				this.die();
+			}
 		}
 	}
 	

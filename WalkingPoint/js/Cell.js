@@ -1,11 +1,29 @@
-export default class Cell {
+import Objects from "./Objects/Objects.js";
+
+/**
+ * Описывает позицию объекта
+ */
+export class Cell {
+	get x() {
+		return this.mPoint.x;
+	}
+	
+	set x(value) {
+		this.mPoint.x = value;
+	}
+	get y() {
+		return this.mPoint.y;
+	}
+	
+	set y(value) {
+		this.mPoint.y = value;
+	}
 	constructor(mPoint, cPoint, scope) {
 		this.mPoint = mPoint;
 		this.cPoint = cPoint;
 		this.scope = scope;
 		this.border = {leftTop: null, rightDown: null};
 		this.type = "Cell";
-		this.placed = {};
 		this.setBorder();
 	}
 	
@@ -56,8 +74,7 @@ export default class Cell {
 		this.mPoint.x = cell.mPoint.x;
 		this.mPoint.y = cell.mPoint.y;
 	}
-	
-	
+
 	
 	//От этого надо избавиться
 	
@@ -83,4 +100,27 @@ export default class Cell {
 	clone() {
 		return new Cell(this.mPoint.clone(), this.cPoint.clone(), this.scope);
 	}
+}
+
+/**
+ * Ячейка самой матрицы
+ */
+export class GroundCell extends Cell {
+	constructor(mPoint, cPoint, groundMatrix) {
+		super(mPoint, cPoint, groundMatrix);
+		this.placed = {};
+	}
+	
+	/**
+	 * Стоит ли на данной клетке что угодно? true, если занято.
+	 * @return {Boolean}
+	 */
+	isBusy() {
+		return Object.keys(this.placed).length > 0;
+	}
+	
+	// clone() {
+	// 	let clonedCell = super.clone();
+	// 	clonedCell.placed = this.placed;
+	// }
 }

@@ -38,6 +38,17 @@ let main = function () {
 	//global.userActivity.movePlayerOnClick(enemy1);
 	global.AI.addAI(enemy1, global.AI.SimpleEnemyAI);
 	
+	let enemy2 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(10, 5)), 130);
+	enemy2.decency = 70;
+	enemy2.color = "rgb(192, 168, 0)";
+	global.objects.addCharacter(enemy2);
+	//global.userActivity.movePlayerOnClick(enemy1);
+	global.AI.addAI(enemy2, global.AI.SimpleEnemyAI);
+	
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(7, 9))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(7, 8))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 8))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 9))));
 	//console.log(player.speed, enemy0.speed, enemy1.speed);
 	
 	global.draw.setRequestAnimationFrame();

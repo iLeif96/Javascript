@@ -5,5 +5,6 @@ export default class Player extends Character {
 		super(name, position, speed, hp);
 		this.type = "Player";
 		this.color = "rgb(190, 200, 220)";
+		this.decency = 100;
 	}
 }
