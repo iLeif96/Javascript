@@ -3,8 +3,7 @@
  */
 class Point {
 	constructor(x, y) {
-		this.x = x;
-		this.y = y;
+		this.setPosition(x, y);
 		this.type = "Point";
 	}
 	
@@ -19,6 +18,13 @@ class Point {
 	
 	clone() {
 		return new Point(this.x, this.y)	
+	}
+	
+	setPosition(x, y) {
+		this.x = x;
+		this.y = y;
+		
+		return this;
 	}
 }
 

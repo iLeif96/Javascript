@@ -3,6 +3,7 @@ import {MPoint} from "./Point.js";
 import {CPoint} from "./Point.js";
 import Global from "./Global.js";
 import tick from "./Tick.js";
+import Interpolation from "./Interpolation/Interpolation.js";
 
 /**
  * Декларация глобального объекта
@@ -25,14 +26,21 @@ let main = function () {
 	// mid.x = 3; mid.y = 2;
 	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(mid));
 	global.userActivity.movePlayerOnClick(player);
+	//global.userActivity.moveTest(player, global.draw);
 	global.AI.addAI(player, global.AI.BaseAI);
 	global.objects.addCharacter(player);
 	
+	
+	let runner0 = new global.objects.chars.Runner("Болт", global.groundMatrix.getCell(new MPoint(4, 7)), 200);
+	//global.userActivity.movePlayerOnClick(enemy0);
+	global.AI.addAI(runner0, global.AI.RunnerAI);
+	global.objects.addCharacter(runner0);
+
 	let enemy0 = new global.objects.chars.Enemy("Жопадрызгович", global.groundMatrix.getCell(new MPoint(1, 3)));
 	//global.userActivity.movePlayerOnClick(enemy0);
 	global.AI.addAI(enemy0, global.AI.SimpleEnemyAI);
 	global.objects.addCharacter(enemy0);
-
+	//
 	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(1, 5)), 170);
 	global.objects.addCharacter(enemy1);
 	//global.userActivity.movePlayerOnClick(enemy1);
@@ -45,15 +53,33 @@ let main = function () {
 	//global.userActivity.movePlayerOnClick(enemy1);
 	global.AI.addAI(enemy2, global.AI.SimpleEnemyAI);
 	
+	// global.events.addEvent("mousedown", global.canvas, function (ev) {
+	// 	let qwe = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), 100);
+	// 	global.objects.addCharacter(qwe);
+	// 	global.AI.addAI(qwe, global.AI.SimpleEnemyAI);
+	// });
+	//
+	// global.events.addEvent("mouseup", global.canvas, function (ev) {
+	// 	let qwe = new global.objects.chars.Runner("Факингович", global.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), 120);
+	// 	global.objects.addCharacter(qwe);
+	// 	global.AI.addAI(qwe, global.AI.RunnerAI);
+	// });
+	
 	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(7, 9))));
 	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(7, 8))));
 	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 8))));
 	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 9))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 10))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 11))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 12))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 13))));
+	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 14))));
 	//console.log(player.speed, enemy0.speed, enemy1.speed);
 	
 	global.draw.setRequestAnimationFrame();
 	//let tickWorker = new Worker("Tick.js");
 	setInterval(tick.bind(this, global), 4);
+	
 	
 };
 

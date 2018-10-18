@@ -49,7 +49,7 @@ export default class Character extends SimpleObject {
 	 */
 	hit(damage, puncher) {
 		this.hp -= damage;
-		console.log("Life is pain. Kill me, f*cking " + puncher.name);
+		//console.log("Life is pain. Kill me, f*cking " + puncher.name);
 	}
 	
 	/**

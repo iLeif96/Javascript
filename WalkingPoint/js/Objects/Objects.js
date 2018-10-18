@@ -3,6 +3,7 @@
  */
 import _Player from "./Characters/Player.js";
 import _Enemy from "./Characters/Enemy.js";
+import _Runner from "./Characters/Runner.js";
 
 import _RoughWall from "./Walls/RoughWall.js";
 
@@ -25,6 +26,11 @@ export default class Objects {
 			 * @type Enemy
 			 */
 			Enemy: _Enemy,
+			
+			/**
+			 * @type Runner
+			 */
+			Runner: _Runner
 		};
 		
 		/**

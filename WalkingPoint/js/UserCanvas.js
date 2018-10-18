@@ -30,6 +30,12 @@ export default class UserCanvas extends EventAbleObject{
 		this.objectsCanvas = null;
 		
 		/**
+		 * Холст для отрисовки тестов
+		 * @type {HTMLCanvasElement}
+		 */
+		this.testsCanvas = null;
+		
+		/**
 		 * Контекст для отрисовки пространства
 		 * @type {CanvasRenderingContext2D}
 		 */
@@ -40,6 +46,12 @@ export default class UserCanvas extends EventAbleObject{
 		 * @type {CanvasRenderingContext2D}
 		 */
 		this.objectsContext = null;
+		
+		/**
+		 * Контекст для отрисовки тестов
+		 * @type {CanvasRenderingContext2D}
+		 */
+		this.testsContext = null;
 		
 		/**
 		 * Были ли изменения в поле
@@ -73,9 +85,11 @@ export default class UserCanvas extends EventAbleObject{
 		
 		this.groundCanvas = this.canvasContainer.children.groundCanvas;
 		this.objectsCanvas = this.canvasContainer.children.objectsCanvas;
+		this.testsCanvas = this.canvasContainer.children.testsCanvas;
 		
 		this.groundContext = this.groundCanvas.getContext("2d");
 		this.objectsContext = this.objectsCanvas.getContext("2d");
+		this.testsContext = this.testsCanvas.getContext("2d");
 		
 		
 		this.refresh();
@@ -99,7 +113,7 @@ export default class UserCanvas extends EventAbleObject{
 	 * Изменение размеров холстов при изменении размеров окна
 	 */
 	resize() {
-		this.width = this.groundCanvas.width = this.objectsCanvas.width = this.canvasContainer.offsetWidth;
-		this.height = this.groundCanvas.height = this.objectsCanvas.height = this.canvasContainer.offsetHeight;
+		this.width = this.groundCanvas.width = this.objectsCanvas.width = this.testsCanvas.width = this.canvasContainer.offsetWidth;
+		this.height = this.groundCanvas.height = this.objectsCanvas.height = this.testsCanvas.height = this.canvasContainer.offsetHeight;
 	}
 }

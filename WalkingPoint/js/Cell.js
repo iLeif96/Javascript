@@ -3,6 +3,7 @@ import Objects from "./Objects/Objects.js";
 /**
  * Описывает позицию объекта
  */
+
 export class Cell {
 	get x() {
 		return this.mPoint.x;
@@ -24,6 +25,7 @@ export class Cell {
 		this.scope = scope;
 		this.border = {leftTop: null, rightDown: null};
 		this.type = "Cell";
+		this.id = Cell.CellId++;
 		this.setBorder();
 	}
 	
@@ -62,6 +64,8 @@ export class Cell {
 		this.cPoint.y = cPoint.y;
 		this.mPoint.x = mPoint.x;
 		this.mPoint.y = mPoint.y;
+		
+		return this;
 	}
 	
 	/**
@@ -124,3 +128,5 @@ export class GroundCell extends Cell {
 	// 	clonedCell.placed = this.placed;
 	// }
 }
+
+Cell.CellId = 0;

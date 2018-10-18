@@ -1,6 +1,7 @@
 import {drawGround} from "./Functions/DrawGround.js";
 import {drawChar} from "./Functions/DrawCharacter.js";
 import {drawWalls} from "./Functions/DrawWalls.js";
+import Interpolation from "../Interpolation/Interpolation.js";
 
 export default class Draw {
 	constructor (canvas, scope, groundMatrix, createdObjects) {
@@ -41,8 +42,22 @@ export default class Draw {
 		
 	};
 	
+	debugDraw(cell) {
+		
+		
+			this.canvas.testsContext.strokeStyle = "rgb(70, 50, 50)";
+			this.canvas.testsContext.fillStyle = "rgb(50, 70, 50)";
+			this.canvas.testsContext.beginPath();
+			this.canvas.testsContext.fillRect(
+				cell.getX(this.groundMatrix), cell.getY(this.groundMatrix),
+				this.scope.scale * this.scope.cell, this.scope.scale * this.scope.cell);
+			this.canvas.testsContext.stroke();
+		
+	}
+	
 	setRequestAnimationFrame() {
-		this.draw();
+		//this.draw();
+		//this.debugDraw();
 		requestAnimationFrame(this.draw.bind(this));
 	}
 	
@@ -54,6 +69,7 @@ export default class Draw {
 		if (!canvas) {
 			this.canvas.groundCanvas.width = this.canvas.groundCanvas.width;
 			this.canvas.objectsCanvas.width = this.canvas.objectsCanvas.width;
+			//this.canvas.testsCanvas.width = this.canvas.testsCanvas.width;
 		}
 		else {
 			canvas.width = canvas.width;

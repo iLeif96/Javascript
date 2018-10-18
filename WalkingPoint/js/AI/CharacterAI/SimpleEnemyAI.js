@@ -1,9 +1,3 @@
-import Periodic from "../../Periodic.js";
-import {CPoint, MPoint} from "../../Point.js";
-import Path from "../../Path.js";
-import Interpolation from "../../Interpolation/Interpolation.js";
-import Animation from "../../Animation/Animation.js";
-import {Cell} from "../../Cell.js";
 import BaseAI from "./BaseAI.js";
 
 export default class SimpleEnemyAI extends BaseAI {

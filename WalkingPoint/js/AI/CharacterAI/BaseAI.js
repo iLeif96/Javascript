@@ -90,7 +90,16 @@ export default class BaseAI extends Periodic{
 	 *  Поиск пути. Возвращает true, если путь создан
 	 */
 	findPath() {
-		this.path = Interpolation.positionToPosition(this.groundMatrix, this.character.position, this.character.targetPosition[0]);
+		this.character.targetPosition[0] = Interpolation.findFreeCell(
+			this.character.targetPosition[0].mPoint,
+			this.groundMatrix,
+			this.character.position.mPoint);
+		
+		this.path = Interpolation.findWaySimple(
+			this.character.position,
+			this.character.targetPosition[0],
+			this.groundMatrix);
+		
 		if (this.path == null) {
 			this.character.targetPosition.shift();
 			return false;
@@ -98,6 +107,7 @@ export default class BaseAI extends Periodic{
 		}
 		//Если создан, то начинаем передвижение
 		else {
+			this.character.targetPosition.shift();
 			return true;
 			this.changeState(this.stateList.move);
 		}
