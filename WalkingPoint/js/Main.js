@@ -4,6 +4,7 @@ import {CPoint} from "./Point.js";
 import Global from "./Global.js";
 import tick from "./Tick.js";
 import Interpolation from "./Interpolation/Interpolation.js";
+import Time from "./Time.js";
 
 /**
  * Декларация глобального объекта
@@ -18,6 +19,7 @@ let main = function () {
 	global = new Global();
 	setStartingProperties();
 	
+	// global.userActivity.gMTest(global.groundMatrix, global.draw);
 	
 	/**
 	 * Создание персонажей
@@ -26,9 +28,10 @@ let main = function () {
 	// mid.x = 3; mid.y = 2;
 	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(mid));
 	global.userActivity.movePlayerOnClick(player);
-	//global.userActivity.moveTest(player, global.draw);
-	global.AI.addAI(player, global.AI.BaseAI);
+	global.userActivity.shootPlayerOnDblClick(player);
+	//global.AI.addAI(player, global.AI.BaseAI);
 	global.objects.addCharacter(player);
+	
 	
 	
 	let runner0 = new global.objects.chars.Runner("Болт", global.groundMatrix.getCell(new MPoint(4, 7)), 200);
@@ -76,9 +79,26 @@ let main = function () {
 	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 14))));
 	//console.log(player.speed, enemy0.speed, enemy1.speed);
 	
+	for (let cell of global.groundMatrix.forEach()) {
+		if (!cell.isBusy()) {
+			if ((cell.x === 0)) {
+				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+			}
+			else if ((cell.y === 0)) {
+				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+			}
+			else if ((cell.x === global.groundMatrix.xLenght - 1)) {
+				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+			}
+			else if ((cell.y === global.groundMatrix.yLenght - 1)) {
+				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+			}
+		}
+	}
+	
 	global.draw.setRequestAnimationFrame();
 	//let tickWorker = new Worker("Tick.js");
-	setInterval(tick.bind(this, global), 4);
+	setInterval(tick.bind(this, global), Time.interval);
 	
 	
 };

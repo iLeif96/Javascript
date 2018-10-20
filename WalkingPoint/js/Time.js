@@ -1,7 +1,12 @@
+/**
+ * Предоставляет временные данные для процесса
+ */
 export default class Time {
-	constructor(interval = 4) {
-		this.interval = interval;
-		this.operationsInSecond = 1000 / this.interval;
+	static get interval() {
+		return 4;
 	}
 	
+	static get operationsInSecond() {
+		return 1000 / this.interval
+	}
 }

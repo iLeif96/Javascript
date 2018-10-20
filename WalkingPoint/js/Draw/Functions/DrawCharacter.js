@@ -29,7 +29,11 @@ export let drawChar = function(ctx, scope, groundMatrix, character) {
 	
 	let drawLenghtHp = (scope.cell / character.maxHp) * character.hp;
 	ctx.fillStyle = "rgb(100, 230, 100)";
+	ctx.shadowBlur = 1;
+	ctx.shadowColor = "rgba(10,10,10,0.5)";
 	ctx.fillRect(character.getX(groundMatrix), character.getY(groundMatrix), scope.scale * drawLenghtHp, 2 * scope.scale);
+
+	ctx.shadowBlur = 0;
 	
 	
 	// ctx.arc(character.getX(groundMatrix) + scope.cell/2 * scope.scale, character.getY(groundMatrix) + scope.cell/2 * scope.scale,

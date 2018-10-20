@@ -5,7 +5,7 @@
 export default class Scope {
 	constructor(canvas, events) {
 		this.canvas = canvas;
-		this.cell = 30;
+		this.cell = 35;
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.scale = 1;
@@ -60,13 +60,13 @@ export default class Scope {
 	 * Получает координату с масштаброванием и смещением по X;
 	 */
 	getX(x) {
-		return (x + this.deltaX) * this.scale;
+		return ((x + this.deltaX) * this.scale);
 	};
 	/**
 	 * Получает координату с масштаброванием и смещением по Y;
 	 */
 	getY(y) {
-		return (y + this.deltaY) * this.scale;
+		return ((y + this.deltaY) * this.scale) ;
 	};
 	
 	 /**

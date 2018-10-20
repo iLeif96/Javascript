@@ -120,6 +120,19 @@ export default class GroundMatrix extends Array {
 		return cell.clone();
 	}
 	
+	/**
+	 * Пробегает по всем клеткам в матрице. Сначала по столбцам, потом по строкам
+	 * @param startCell
+	 * @param endCell
+	 * @return {IterableIterator<*>}
+	 */
+	*forEach(startCell = new MPoint(0, 0), endCell = new MPoint(this.xLenght - 1, this.yLenght - 1)) {
+		for (let i = startCell.x; i <= endCell.x; i++) {
+			for (let j = startCell.y; j <= endCell.y; j++) {
+				yield this[i][j];
+			}
+		}
+	}
 	
 	//От этого надо избавиться
 	

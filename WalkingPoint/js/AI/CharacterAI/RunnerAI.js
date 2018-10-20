@@ -114,8 +114,6 @@ export default class SimpleEnemyAI extends BaseAI {
 			if (this.path === null) {
 				this.findPath();
 			}
-			
-			this.followThePath();
 		}
 		
 		//Продолжаем убегать

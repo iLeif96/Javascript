@@ -1,32 +1,34 @@
 import {Cell} from "../Cell.js";
 import {CPoint} from "../Point.js";
+import Time from "../Time.js";
 
 /**
  * Анимирует плавное перемещение между клетками матрицы
  */
 export default class Animation {
 	/**
-	 * @param time {Time}
 	 * @param path {Path}
 	 * @param speed {Number}
 	 * @param mode {modes}
+	 * @return {Animation}
 	 */
-	constructor(time, path, speed, mode) {
+	constructor(path, speed, mode) {
 		this.modes = {
 			positionToPosition: this.positionToPosition
 		};
+		if (path.length < 2)
+			return null;
 		
 		this.startTime = 0;
 		this.endTime = 1;
 		this.currentTime = 0;
 		
-		this.inc = 1 / time.operationsInSecond;
+		this.inc = 1 / Time.operationsInSecond;
 		
 		this.done = false;
 		
 		this.path = path;
 		this.speed = speed;
-		this.time = time;
 		
 		this.startPosition = null;
 		this.endPosition = null;
@@ -65,6 +67,10 @@ export default class Animation {
 	positionToPosition() {
 		this.currentPosition.x = this.startPosition.x + (this.currentTime * this.xSpeed);
 		this.currentPosition.y = this.startPosition.y + (this.currentTime * this.ySpeed);
+	}
+	
+	isDone() {
+		return this.done;
 	}
 	
 	/**

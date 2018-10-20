@@ -6,7 +6,7 @@
 export default function Tick(global) {
 	
 	global.objects.createdObjects.createdWalls.forEach((wall)=> {
-		wall.tick();
+		wall.tick(global.canvas);
 		let oldPlace = global.groundMatrix[wall.lastPosition.mPoint.x][wall.lastPosition.mPoint.y];
 		let newPlace = global.groundMatrix[wall.position.mPoint.x][wall.position.mPoint.y];
 		if (oldPlace !== newPlace) {
@@ -15,11 +15,12 @@ export default function Tick(global) {
 				delete oldPlace.placed[wall.id];
 			}
 			wall.lastPosition = wall.position.clone();
+			global.draw.canvas.wallsChanges = true;
 		}
 	});
 	
 	global.objects.createdObjects.createdCharacter.forEach((character) => {
-		character.tick();
+		character.tick(global.canvas);
 		let oldPlace = global.groundMatrix[character.lastPosition.mPoint.x][character.lastPosition.mPoint.y];
 		let newPlace = global.groundMatrix[character.position.mPoint.x][character.position.mPoint.y];
 		if (oldPlace !== newPlace) {
@@ -28,6 +29,7 @@ export default function Tick(global) {
 				delete oldPlace.placed[character.id];
 			}
 			character.lastPosition = character.position.clone();
+			global.draw.canvas.charactersChanges = true;
 		}
 	});
 }

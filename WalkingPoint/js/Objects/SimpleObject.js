@@ -1,6 +1,7 @@
 import {Cell} from "../Cell.js";
 import {EventAbleObject} from "../Events.js";
 import Periodic from "../Periodic.js";
+import Move from "../Moving/Move.js"
 
 export default class SimpleObject extends Periodic {
 	constructor(name = "Object", position, hp = 100) {
@@ -11,10 +12,34 @@ export default class SimpleObject extends Periodic {
 		this.maxHp = hp;
 		this.hp = hp;
 		this.type = "SimpleObject";
+		this.speed = 0;
 		this.color = "rgb(30, 30, 30)";
 		this.id = 0;
 		this.isDie = false;
+		this.longWeapon = null;
 		//this.born();
+		this.forceMove = false;
+		this.targetPosition = [];
+		this.move = null;
+		this.canvasType = "globalChanges";
+		
+	}
+	
+	isMoving() {
+		if (this.move !== null) {
+			if (this.move.isMoving) {
+				return true
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Вызывается для перемещения куда бы то ни было
+	 * @param move {Move}
+	 */
+	moveTo(move) {
+		this.move = move;
 	}
 	
 	/**
@@ -43,13 +68,30 @@ export default class SimpleObject extends Periodic {
 	/**
 	 * Периодично вызываемая функция
 	 */
-	tick() {
+	tick(canvas) {
 		if (!this.isDie) {
 			if (this.hp <= 0) {
 				this.die();
 			}
 		}
+		
+		if (this.move !== null) {
+			this.move.tick(canvas);
+		}
 	}
+	
+	/**
+	 * Записывает точку, в которую персонаж должен переместиться
+	 * @param targetPosition {Cell}
+	 * @param forceMove {boolean}
+	 */
+	setTargetPosition(targetPosition, forceMove = true) {
+		if (forceMove) {
+			this.targetPosition = [targetPosition];
+		}
+		this.targetPosition.push(targetPosition);
+		this.forceMove = forceMove;
+	};
 	
 	//От этого надо избавиться
 	

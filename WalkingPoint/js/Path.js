@@ -51,9 +51,17 @@ export default class Path extends Array {
 	 *  @return Path
 	 */
 	nextPath() {
-		if (this.currentPositionInPath < this.length)
+		if (!this.isDone())
 			return new Path(this[this.currentPositionInPath], this[++this.currentPositionInPath]);
 		else
 			return null;
+	}
+	
+	/**
+	 * Закончен ли путь
+	 * true, если закончен
+	 */
+	isDone() {
+		return (this.currentPositionInPath >= this.length - 1);
 	}
 }

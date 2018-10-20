@@ -5,5 +5,6 @@ export default class Wall extends SimpleObject {
 		super(name = "Wall", position, hp);
 		this.type = "Wall";
 		this.color = "rgb(150, 250, 150)";
+		this.canvasType = "walls";
 	}
 };

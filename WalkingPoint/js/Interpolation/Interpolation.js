@@ -1,6 +1,7 @@
 import {Cell} from "../Cell.js";
 import Path from "../Path.js";
 import {MPoint} from "../Point.js";
+import Queue from "../Objects/Queue.js";
 
 /**
  * Просчитывает точки путей
@@ -42,7 +43,6 @@ export default class Interpolation {
 		
 		//Просчитываем путь
 		do {
-			
 			if (path[path.length - 2]) {
 				prevCell = path[path.length - 2]
 			}
@@ -90,21 +90,7 @@ export default class Interpolation {
 		let visited = {};
 		
 		//Бегунок по клеткам
-		let frontier = {
-			current: null,
-			arr: [],
-			i: -1,
-			put(around) {
-				this.arr.push(around);
-			},
-			get() {
-				this.current = this.arr[++this.i];
-				return this.current;
-			},
-			isDone() {
-				return (this.i >= this.arr.length)
-			}
-		};
+		let frontier = new Queue();
 		
 		//Помещаем в массив первую точку
 		frontier.put(sP.clone());
@@ -130,7 +116,7 @@ export default class Interpolation {
 				let putPoint = frontier.current;
 				
 				while (putPoint.parent) {
-					//if (draw) draw.debugDraw(putPoint);
+					if (draw) draw.debugDraw(putPoint);
 					path.push(gM[putPoint.x][putPoint.y].clone());
 					putPoint = putPoint.parent;
 				}
@@ -161,25 +147,53 @@ export default class Interpolation {
 	}
 	
 	/**
-	 * Ищет клетки вокруг точки
+	 * Ищет клетки вокруг точки. Генератор
 	 * @param point {MPoint}
 	 * @param gM {GroundMatrix}
 	 * @return Array
 	 */
 	static *aroundPoints(point, gM) {
 		//let arr = [];
-		let mP = null;
-		for (let i = -1; i <= 1; i++) {
-			for (let j = -1; j <= 1; j++) {
-				if ((point.x + i >= 0 && point.x + i < gM.xLenght) && (point.y + j >= 0 && point.y + j < gM.yLenght)) {
-					let cell = gM[point.x + i][point.y + j];
-					if ((i !== j !== 1)) {
-						//arr.push(cell.mPoint);
-						yield cell;
-					}
-				}
-			}
+		// let mP = null;
+		// for (let i = -1; i <= 1; i++) {
+		// 	for (let j = -1; j <= 1; j++) {
+		// 		if ((point.x + i >= 0 && point.x + i < gM.xLenght) && (point.y + j >= 0 && point.y + j < gM.yLenght)) {
+		// 			if ((i !== j !== 1)) {
+		// 				//arr.push(cell.mPoint);
+		// 				yield gM[point.x + i][point.y + j];
+		// 			}
+		// 		}
+		// 	}
+		// }
+		//
+		// let arr = [];
+		
+		if ((point.x >= 0 && point.x < gM.xLenght) && (point.y - 1 >= 0 && point.y - 1 < gM.yLenght)) {
+			yield (gM[point.x][point.y - 1])
 		}
+		if ((point.x - 1 >= 0 && point.x - 1 < gM.xLenght) && (point.y >= 0 && point.y < gM.yLenght)) {
+			yield (gM[point.x - 1][point.y])
+		}
+		if ((point.x + 1 >= 0 && point.x + 1 < gM.xLenght) && (point.y >= 0 && point.y < gM.yLenght)) {
+			yield (gM[point.x + 1][point.y])
+		}
+		if ((point.x >= 0 && point.x < gM.xLenght) && (point.y + 1 >= 0 && point.y + 1 < gM.yLenght)) {
+			yield (gM[point.x][point.y + 1])
+		}
+		
+		if ((point.x - 1 >= 0 && point.x - 1< gM.xLenght) && (point.y - 1 >= 0 && point.y - 1 < gM.yLenght)) {
+			yield (gM[point.x - 1][point.y - 1])
+		}
+		if ((point.x + 1 >= 0 && point.x + 1 < gM.xLenght) && (point.y - 1>= 0 && point.y - 1 < gM.yLenght)) {
+			yield (gM[point.x + 1][point.y - 1])
+		}
+		if ((point.x - 1 >= 0 && point.x - 1 < gM.xLenght) && (point.y + 1>= 0 && point.y + 1 < gM.yLenght)) {
+			yield (gM[point.x - 1][point.y + 1])
+		}
+		if ((point.x + 1 >= 0 && point.x + 1 < gM.xLenght) && (point.y + 1 >= 0 && point.y + 1 < gM.yLenght)) {
+			yield (gM[point.x + 1][point.y + 1])
+		}
+		
 		//return arr;
 	}
 	
@@ -248,8 +262,10 @@ export default class Interpolation {
 				}
 			}
 		}
-		
-		return resultCell.clone();
+		if (resultCell !== null)
+			return resultCell.clone();
+		else
+			return null;
 	}
 	
 	positionToPositionOld() {

@@ -6,16 +6,8 @@ export default class Character extends SimpleObject {
 		this.type = "Character";
 		this.color = "rgb(150, 150, 150)";
 		this.speed = speed;
-		/**
-		 * Цель перемещения игрока
-		 * @Type {Array} Cell
-		 */
-		this.targetPosition = [];
+		this.canvasType = "characters";
 		
-		/**
-		 * Должен ли персонаж пересчитать траекторию движения
-		 */
-		this.forceMove = false;
 		
 		/**
 		 * Цель перемещения игрока
@@ -34,6 +26,8 @@ export default class Character extends SimpleObject {
 		 */
 		this.decency = 50;
 	}
+	
+
 	
 	die() {
 		super.die();
@@ -55,30 +49,13 @@ export default class Character extends SimpleObject {
 	/**
 	 * Периодически вызываемая функция
 	 */
-	tick() {
-		super.tick();
+	tick(canvas) {
+		super.tick(canvas);
 		
 		if (this.AI !== null) {
 			this.AI.tick();
 		}
-		else {
-			if (this.targetPosition.length !== 0) {
-				this.position = this.targetPosition[0];
-				this.targetPosition.shift();
-			}
-		}
 	}
 	
-	/**
-	 * Записывает точку, в которую персонаж должен переместиться
-	 * @param targetPosition {Cell}
-	 * @param forceMove {boolean}
-	 */
-	setTargetPosition(targetPosition, forceMove = true) {
-		if (forceMove) {
-			this.targetPosition = [targetPosition];
-		}
-		this.targetPosition.push(targetPosition);
-		this.forceMove = forceMove;
-	};
+
 };

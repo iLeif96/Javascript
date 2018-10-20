@@ -6,5 +6,6 @@ export default class Player extends Character {
 		this.type = "Player";
 		this.color = "rgb(190, 200, 220)";
 		this.decency = 100;
+		this.longWeapon = true;
 	}
 }

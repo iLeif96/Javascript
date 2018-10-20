@@ -17,11 +17,7 @@ export default class Global {
 		 * @type {UserCanvas}
 		 */
 		this.canvas = null;
-		/**
-		 * Задает настройки времени периодических функций и общую скорость процесса т.п.
-		 * @type {Time}
-		 */
-		this.time = null;
+		
 		/**
 		 * Все, что касается обработки событий пользователя
 		 * @type {Events}
@@ -66,7 +62,6 @@ export default class Global {
 	 * Производит инициализацию глобальных объектов
 	 */
 	initialisation() {
-		this.time = new Time();
 		this.events = new Events();
 		this.canvas = new UserCanvas(this.events);
 		this.scope = new Scope(this.canvas, this.events);

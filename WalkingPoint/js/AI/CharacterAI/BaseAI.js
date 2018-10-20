@@ -4,6 +4,7 @@ import Path from "../../Path.js";
 import Interpolation from "../../Interpolation/Interpolation.js";
 import Animation from "../../Animation/Animation.js";
 import {Cell} from "../../Cell.js";
+import Move from "../../Moving/Move.js";
 
 export default class BaseAI extends Periodic{
 	/**
@@ -47,6 +48,12 @@ export default class BaseAI extends Periodic{
 		this.state = this.stateList.idle;
 		
 		/**
+		 * Предыдущее состояние персонажа
+		 * @type {stateList}
+		 */
+		this.prevState = this.state;
+		
+		/**
 		 * Анимируется ли объект
 		 */
 		this.animating = false;
@@ -57,6 +64,7 @@ export default class BaseAI extends Periodic{
 	 * @param newState {stateList}
 	 */
 	changeState(newState) {
+		this.prevState = this.state;
 		this.state = newState;
 	}
 	
@@ -79,7 +87,6 @@ export default class BaseAI extends Periodic{
 	checkForMoving() {
 		if (this.character.targetPosition[0] ) {
 			//Если путь не создан, то удаляем targetPosition и переходим в idle
-			this.character.forceMove = false;
 			return true;
 			this.changeState(this.stateList.findPath);
 		}
@@ -90,85 +97,7 @@ export default class BaseAI extends Periodic{
 	 *  Поиск пути. Возвращает true, если путь создан
 	 */
 	findPath() {
-		this.character.targetPosition[0] = Interpolation.findFreeCell(
-			this.character.targetPosition[0].mPoint,
-			this.groundMatrix,
-			this.character.position.mPoint);
-		
-		this.path = Interpolation.findWaySimple(
-			this.character.position,
-			this.character.targetPosition[0],
-			this.groundMatrix);
-		
-		if (this.path == null) {
-			this.character.targetPosition.shift();
-			return false;
-			this.changeState(this.stateList.idle)
-		}
-		//Если создан, то начинаем передвижение
-		else {
-			this.character.targetPosition.shift();
-			return true;
-			this.changeState(this.stateList.move);
-		}
-	}
-	
-	/**
-	 *  Передвижение по пути. Возвращает true, если передвижение осуществляется
-	 */
-	followThePath() {
-		//Есть ли сам путь, по которому идти
-			//Если анимация не создана, то создаем её
-			if (this.anim == null && this.path !== null) {
-				this.anim = new Animation(this.time, this.path.nowPath(), this.character.speed, null);
-				this.animating = true;
-				//this.changeState(this.stateList.move);
-				//this.character.position.setPosition(this.path.now().mPoint, this.anim.next());
-				//this.character.position = this.path.next();
-				//this.canvas.objectsChanges = true;
-			}
-			//Явно что-то не так
-			else if (this.anim === null && this.path === null) {
-				return false;
-			}
-			//Если анимации не закончена, то устанавливаем персонажу новую позицию
-			else if (!this.anim.done) {
-				this.character.position.setPosition(this.path.now().mPoint, this.anim.next());
-				this.canvas.objectsChanges = true;
-			}
-			//Если анимация закончена, то удаляем объект анимации и принудительно устанавливаем персонажа в последнюю точку пути
-			else {
-				this.anim = null;
-				this.path.currentPositionInPath++;
-				this.character.position.setPositionFromCell(this.path.now());
-				this.animating = false;
-			}
-			
-			/**
-			 * Проверка на окончание пути
-			 */
-			if (this.path.currentPositionInPath >= this.path.length - 1) {
-				if (this.character.targetPosition[0]) {
-					this.character.targetPosition.shift();
-				}
-				
-				this.path = null;
-				return false;
-				this.changeState(this.stateList.idle);
-			}
-			return true;
-		
-	}
-	
-	/**
-	 * Идет ли сейчас анимация?
-	 */
-	isAnimating() {
-		if (this.anim) {
-			if (!this.anim.done)
-				return true;
-		}
-		return false;
+		this.character.moveTo(new Move(this.character, this.character.targetPosition[0], this.groundMatrix))
 	}
 	
 	tick() {
@@ -176,7 +105,7 @@ export default class BaseAI extends Periodic{
 		switch (this.state) {
 			
 			case (this.stateList.idle):
-				if (!this.isAnimating())
+				if (!this.character.isMoving())
 					this.checkForMoving() ? this.changeState(this.stateList.findPath) : this.changeState(this.stateList.idle);
 				break;
 				
@@ -185,7 +114,7 @@ export default class BaseAI extends Periodic{
 				break;
 				
 			case (this.stateList.move):
-				this.followThePath() ? this.changeState(this.stateList.move) : this.changeState(this.stateList.idle);
+				this.character.isMoving() ? this.changeState(this.stateList.move) : this.changeState(this.stateList.idle);
 				break;
 		}
 		//console.log(this.state);

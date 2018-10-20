@@ -80,7 +80,6 @@ export default class SimpleEnemyAI extends BaseAI {
 			this.findPath();
 		}
 		
-		this.followThePath();
 		
 		
 		//Продолжаем преследование
@@ -110,7 +109,7 @@ export default class SimpleEnemyAI extends BaseAI {
 			//Если путь уже создан, то идем по нему
 			if (this.path !== null) {
 				//Идем. Если путь пройден, то будем искать другую точку для патрулирования
-					if (!this.followThePath()) {
+					if (!this.character.isMoving()) {
 						this.patrolCell = null;
 					}
 			}
@@ -124,8 +123,6 @@ export default class SimpleEnemyAI extends BaseAI {
 						this.patrolCell = null;
 					}
 				//}
-				this.followThePath();
-				
 			}
 			return true;
 		}
