@@ -3,7 +3,8 @@
  */
 class Point {
 	constructor(x, y) {
-		this.setPosition(x, y);
+		this.x = x;
+		this.y = y;
 		this.type = "Point";
 	}
 	

@@ -23,8 +23,6 @@ export default class Animation {
 		this.endTime = 1;
 		this.currentTime = 0;
 		
-		this.inc = 1 / Time.operationsInSecond;
-		
 		this.done = false;
 		
 		this.path = path;
@@ -35,6 +33,9 @@ export default class Animation {
 		this.currentPosition = null;
 		
 		this.solveAnimation();
+		
+		this.inc = 1 / Time.operationsInSecond;
+		
 	}
 	
 	/**
@@ -43,10 +44,15 @@ export default class Animation {
 	solveAnimation() {
 		if (this.path.length === 2) {
 			let pt1 = this.path[0];
-			let pt2 = this.path[1];
+			if (pt1.cPoint)
+				pt1 = pt1.cPoint;
 			
-			let x = pt2.cPoint.x - pt1.cPoint.x;
-			let y = pt2.cPoint.y - pt1.cPoint.y;
+			let pt2 = this.path[1];
+			if (pt2.cPoint)
+				pt2 = pt2.cPoint;
+			
+			let x = pt2.x - pt1.x;
+			let y = pt2.y - pt1.y;
 			
 			let module = Math.sqrt((x * x) + (y * y));
 			
@@ -55,9 +61,9 @@ export default class Animation {
 			this.xSpeed = x / this.endTime;
 			this.ySpeed = y / this.endTime;
 			
-			this.startPosition = pt1.cPoint.clone();
-			this.endPosition = pt2.cPoint.clone();
-			this.currentPosition = pt1.cPoint;
+			this.startPosition = pt1.clone();
+			this.endPosition = pt2.clone();
+			this.currentPosition = pt1;
 		}
 	}
 	

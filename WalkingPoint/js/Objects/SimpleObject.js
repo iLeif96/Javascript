@@ -1,36 +1,41 @@
-import {Cell} from "../Cell.js";
-import {EventAbleObject} from "../Events.js";
 import Periodic from "../Periodic.js";
 import Move from "../Moving/Move.js"
 
 export default class SimpleObject extends Periodic {
-	constructor(name = "Object", position, hp = 100) {
+	constructor(name = "Object", position) {
 		super();
 		this.name = name;
-		this.lastPosition = position.clone();
+		this.lastPosition = position;
 		this.position = position;
-		this.maxHp = hp;
-		this.hp = hp;
-		this.type = "SimpleObject";
-		this.speed = 0;
+		this.type = SimpleObject;
+		this.baseType = SimpleObject;
 		this.color = "rgb(30, 30, 30)";
 		this.id = 0;
-		this.isDie = false;
-		this.longWeapon = null;
-		//this.born();
 		this.forceMove = false;
+		this.speed = 0;
 		this.targetPosition = [];
-		this.move = null;
-		this.canvasType = "globalChanges";
+		this.decency = 0;
+		this.needRedraw = true;
+		this.actions = {};
+		
+		//this.move = null;
 		
 	}
 	
+	addAction(action) {
+		this.actions[action.toString()] = action;
+	}
+	
+	deleteAction(action) {
+		delete this.actions[action.toString()];
+	}
+	
 	isMoving() {
-		if (this.move !== null) {
-			if (this.move.isMoving) {
-				return true
-			}
-		}
+		// if (this.actions["Move"] !== null) {
+		// 	if (this.actions["Move"].isMoving()) {
+		// 		return true
+		// 	}
+		// }
 		return false;
 	}
 	
@@ -39,14 +44,25 @@ export default class SimpleObject extends Periodic {
 	 * @param move {Move}
 	 */
 	moveTo(move) {
-		this.move = move;
+		if (move) {
+			this.addAction(move);
+			
+			move.afterFunc = function (context) {
+				if (context.currentPosition.groundCell.isBusy(context.object)) {
+					context.resolvePath();
+				}
+				context.object.position = context.currentPosition;
+			};
+			
+			return true;
+		}
+		return false;
 	}
 	
 	/**
 	 * Вызывается при создании объекта
 	 */
 	born() {
-		this.isDie = false;
 		console.log("Shh: *", this.name);
 	}
 	
@@ -54,44 +70,23 @@ export default class SimpleObject extends Periodic {
 	 * Вызывается при смерти объекта
 	 */
 	die() {
-		this.isDie = true;
 		console.log("Shh: *", this.name)
-	}
-	
-	/**
-	 * Для удара по чему-то
-	 */
-	hit(damage, puncher) {
-		this.hp -= damage;
 	}
 	
 	/**
 	 * Периодично вызываемая функция
 	 */
-	tick(canvas) {
-		if (!this.isDie) {
-			if (this.hp <= 0) {
-				this.die();
+	tick() {
+		for (let action in this.actions) {
+			if (this.actions[action] !== null) {
+				this.actions[action].tick();
 			}
-		}
-		
-		if (this.move !== null) {
-			this.move.tick(canvas);
 		}
 	}
 	
-	/**
-	 * Записывает точку, в которую персонаж должен переместиться
-	 * @param targetPosition {Cell}
-	 * @param forceMove {boolean}
-	 */
-	setTargetPosition(targetPosition, forceMove = true) {
-		if (forceMove) {
-			this.targetPosition = [targetPosition];
-		}
-		this.targetPosition.push(targetPosition);
-		this.forceMove = forceMove;
-	};
+	toString() {
+		return this.id;
+	}
 	
 	//От этого надо избавиться
 	

@@ -34,27 +34,27 @@ let main = function () {
 	
 	
 	
-	let runner0 = new global.objects.chars.Runner("Болт", global.groundMatrix.getCell(new MPoint(4, 7)), 200);
-	//global.userActivity.movePlayerOnClick(enemy0);
-	global.AI.addAI(runner0, global.AI.RunnerAI);
-	global.objects.addCharacter(runner0);
-
-	let enemy0 = new global.objects.chars.Enemy("Жопадрызгович", global.groundMatrix.getCell(new MPoint(1, 3)));
-	//global.userActivity.movePlayerOnClick(enemy0);
-	global.AI.addAI(enemy0, global.AI.SimpleEnemyAI);
-	global.objects.addCharacter(enemy0);
+	// let runner0 = new global.objects.chars.Runner("Болт", global.groundMatrix.getCell(new MPoint(4, 7)), 200);
+	// //global.userActivity.movePlayerOnClick(enemy0);
+	// global.AI.addAI(runner0, global.AI.RunnerAI);
+	// global.objects.addCharacter(runner0);
+	// //
+	// let enemy0 = new global.objects.chars.Enemy("Жопадрызгович", global.groundMatrix.getCell(new MPoint(1, 3)));
+	// //global.userActivity.movePlayerOnClick(enemy0);
+	// global.AI.addAI(enemy0, global.AI.SimpleEnemyAI);
+	// global.objects.addCharacter(enemy0);
+	// //
+	// let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(1, 5)), 170);
+	// global.objects.addCharacter(enemy1);
+	// //global.userActivity.movePlayerOnClick(enemy1);
+	// global.AI.addAI(enemy1, global.AI.SimpleEnemyAI);
 	//
-	let enemy1 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(1, 5)), 170);
-	global.objects.addCharacter(enemy1);
-	//global.userActivity.movePlayerOnClick(enemy1);
-	global.AI.addAI(enemy1, global.AI.SimpleEnemyAI);
-
-	let enemy2 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(10, 5)), 130);
-	enemy2.decency = 70;
-	enemy2.color = "rgb(192, 168, 0)";
-	global.objects.addCharacter(enemy2);
-	//global.userActivity.movePlayerOnClick(enemy1);
-	global.AI.addAI(enemy2, global.AI.SimpleEnemyAI);
+	// let enemy2 = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new MPoint(10, 5)), 130);
+	// // enemy2.decency = 70;
+	// enemy2.color = "rgb(192, 168, 0)";
+	// global.objects.addCharacter(enemy2);
+	// //global.userActivity.movePlayerOnClick(enemy1);
+	// global.AI.addAI(enemy2, global.AI.SimpleEnemyAI);
 	
 	// global.events.addEvent("mousedown", global.canvas, function (ev) {
 	// 	let qwe = new global.objects.chars.Enemy("Факингович", global.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), 100);
@@ -68,30 +68,30 @@ let main = function () {
 	// 	global.AI.addAI(qwe, global.AI.RunnerAI);
 	// });
 	
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(7, 9))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(7, 8))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 8))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 9))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 10))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 11))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 12))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 13))));
-	global.objects.addWall(new global.objects.walls.RoughWall("Wall", global.groundMatrix.getCell(new MPoint(8, 14))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(7, 9))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(7, 8))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 8))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 9))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 10))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 11))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 12))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 13))));
+	global.objects.addWall(new global.objects.walls.RoughWall("wall", global.groundMatrix.getCell(new MPoint(8, 14))));
 	//console.log(player.speed, enemy0.speed, enemy1.speed);
 	
 	for (let cell of global.groundMatrix.forEach()) {
 		if (!cell.isBusy()) {
 			if ((cell.x === 0)) {
-				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+				global.objects.addWall(new global.objects.walls.RoughWall("wall", cell.clone()));
 			}
 			else if ((cell.y === 0)) {
-				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+				global.objects.addWall(new global.objects.walls.RoughWall("wall", cell.clone()));
 			}
 			else if ((cell.x === global.groundMatrix.xLenght - 1)) {
-				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+				global.objects.addWall(new global.objects.walls.RoughWall("wall", cell.clone()));
 			}
 			else if ((cell.y === global.groundMatrix.yLenght - 1)) {
-				global.objects.addWall(new global.objects.walls.RoughWall("Wall", cell.clone()));
+				global.objects.addWall(new global.objects.walls.RoughWall("wall", cell.clone()));
 			}
 		}
 	}

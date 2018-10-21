@@ -1,16 +1,16 @@
-import SimpleObject from "../SimpleObject.js";
+import PhysicalObjects from "../PhysicalObjects.js";
 
-export default class Character extends SimpleObject {
+export default class Character extends PhysicalObjects {
 	constructor(name = "Character", position, speed = 200, hp) {
 		super(name, position, hp);
-		this.type = "Character";
+		this.type = Character;
+		this.baseType = Character;
 		this.color = "rgb(150, 150, 150)";
 		this.speed = speed;
-		this.canvasType = "characters";
 		
 		
 		/**
-		 * Цель перемещения игрока
+		 * ИИ объекта
 		 * @Type {BaseAI}
 		 */
 		this.AI = null;
@@ -49,12 +49,12 @@ export default class Character extends SimpleObject {
 	/**
 	 * Периодически вызываемая функция
 	 */
-	tick(canvas) {
-		super.tick(canvas);
-		
+	tick() {
 		if (this.AI !== null) {
 			this.AI.tick();
 		}
+		
+		super.tick();
 	}
 	
 

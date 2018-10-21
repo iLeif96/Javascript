@@ -97,7 +97,13 @@ export default class BaseAI extends Periodic{
 	 *  Поиск пути. Возвращает true, если путь создан
 	 */
 	findPath() {
-		this.character.moveTo(new Move(this.character, this.character.targetPosition[0], this.groundMatrix))
+		try {
+			this.character.moveTo(new Move(this.character, this.character.targetPosition[0].clone(), this.groundMatrix));
+		}
+		catch (e) {
+		
+		}
+		return (this.character.move !== null);
 	}
 	
 	tick() {

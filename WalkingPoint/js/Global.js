@@ -67,7 +67,7 @@ export default class Global {
 		this.scope = new Scope(this.canvas, this.events);
 		this.groundMatrix = new GroundMatrix(this.canvas, this.scope);
 		this.objects = new Objects(this.groundMatrix);
-		this.userActivity = new UserActivity(this.canvas, this.scope, this.groundMatrix, this.events);
+		this.userActivity = new UserActivity(this.canvas, this.scope, this.groundMatrix, this.events, this.objects);
 		this.AI = new AI(this.scope, this.groundMatrix, this.canvas, this.time);
 		this.draw = new Draw(this.canvas, this.scope, this.groundMatrix, this.objects.createdObjects);
 	}

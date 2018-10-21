@@ -12,11 +12,13 @@ export default class UserActivity {
 	 * @param {GroundMatrix} groundMatrix - поле
 	 * @param {Scope} scope - для перевода координат
 	 * @param {Events} events - события
+	 * @param {Object} objects - объекты
 	 */
-	constructor(canvas, scope, groundMatrix, events) {
+	constructor(canvas, scope, groundMatrix, events, objects) {
 		this.canvas = canvas;
 		this.groundMatrix = groundMatrix;
 		this.events = events;
+		this.objects = objects;
 		
 		/**
 		 * Клавиши, нажатые в данный момент
@@ -57,9 +59,10 @@ export default class UserActivity {
 		this.events.addEvent("click", this.canvas, (ev) => {
 			//ev.preventDefault();
 			let targetPos = this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY()));
+			player.doShot(targetPos, this.groundMatrix, this.objects);
 				//player.setTargetPosition(this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), true);
 				
-			player.moveTo(new Move(player, targetPos, this.groundMatrix));
+			//player.moveTo(new Move(player, targetPos, this.groundMatrix));
 			//return false;
 			//console.log(player.targetPosition);
 		});
@@ -72,7 +75,8 @@ export default class UserActivity {
 	shootPlayerOnDblClick(player) {
 		this.events.addEvent("dblclick", this.canvas, (ev) => {
 			ev.preventDefault();
-			player.setTargetPosition(this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), true);
+			let targetPos = this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY()));
+			player.moveTo(new Move(player, targetPos, this.groundMatrix));
 			return false;
 			//console.log(player.targetPosition);
 		});

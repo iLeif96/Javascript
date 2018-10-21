@@ -11,10 +11,17 @@ export default class Queue {
 		this.arr =  [];
 		
 		if (saveValues) {
-			this.i = -1;
+			this.i = 0;
+			
 			this.get = function () {
-				this.current = this.arr[++this.i];
+				this.current = this.arr[this.i++];
 				return this.current;
+			};
+			
+			this.put = function (cell) {
+				// if (this.i === - 1)
+				// 	this.i = 0;
+				this.arr.push(cell);
 			};
 			
 			this.isDone = function() {

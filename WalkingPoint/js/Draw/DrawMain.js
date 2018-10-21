@@ -33,7 +33,7 @@ export default class Draw {
 			// });
 			
 			//Рисуем персонажей;
-			this.createdObjects.createdCharacter.forEach((character) => {
+			this.createdObjects.character.forEach((character) => {
 				drawShadow(this.canvas.charactersContext, this.scope, this.groundMatrix, character, 1);
 				drawChar(this.canvas.charactersContext, this.scope, this.groundMatrix, character);
 			});
@@ -44,11 +44,11 @@ export default class Draw {
 		if (this.canvas.wallsChanges || this.canvas.globalChanges) {
 			this.clear(this.canvas.wallsCanvas);
 			//Рисуем тени стен;
-			this.createdObjects.createdWalls.forEach((wall) => {
+			this.createdObjects.wall.forEach((wall) => {
 				drawShadow(this.canvas.wallsContext, this.scope, this.groundMatrix, wall);
 			});
 			//Рисуем стены;
-			this.createdObjects.createdWalls.forEach((wall) => {
+			this.createdObjects.wall.forEach((wall) => {
 				drawWalls(this.canvas.wallsContext, this.scope, this.groundMatrix, wall);
 			});
 			

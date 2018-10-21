@@ -1,11 +1,15 @@
 /**
  * Сначла импортируем объекты
  */
-import _Player from "./Characters/Player.js";
-import _Enemy from "./Characters/Enemy.js";
-import _Runner from "./Characters/Runner.js";
+import Player from "./PhysicalObjects/Characters/Player.js";
+import Enemy from "./PhysicalObjects/Characters/Enemy.js";
+import Runner from "./PhysicalObjects/Characters/Runner.js";
 
-import _RoughWall from "./Walls/RoughWall.js";
+import RoughWall from "./PhysicalObjects/Walls/RoughWall.js";
+
+import Bullet from "./Decals/Bullet.js";
+
+import Weapon from "./PhysicalObjects/Loot/Weapons/Weapon.js";
 
 /**
  * Основной класс для создания и хранения объектов;
@@ -18,34 +22,45 @@ export default class Objects {
 		 Список доступных персонажей
 		 */
 		this.chars = {
-			/**
-			 * @type Player
-			 */
-			Player: _Player,
-			/**
-			 * @type Enemy
-			 */
-			Enemy: _Enemy,
-			
-			/**
-			 * @type Runner
-			 */
-			Runner: _Runner
+			/** @type Player */
+			Player: Player,
+			/** @type Enemy */
+			Enemy: Enemy,
+			/** @type Runner */
+			Runner: Runner
 		};
 		
 		/**
 			Список доступных стен
 		 */
 		this.walls = {
-			RoughWall: _RoughWall,
+			/** @type RoughWall */
+			RoughWall: RoughWall,
+		};
+		
+		/**
+		 Список доступных декалей
+		 */
+		this.decals = {
+			/** @type RoughWall */
+			Bullet: Bullet,
+		};
+		
+		/**
+		 Список доступных декалей
+		 */
+		this.loot = {
+			Weapon: Weapon,
 		};
 		
 		/**
 		 * Список созданных объектов
 		 */
 		this.createdObjects = {
-			createdCharacter: [],
-			createdWalls: [],
+			character: [],
+			decal: [],
+			wall: [],
+			loot: [],
 		};
 		
 		this.forId = 0;
@@ -56,10 +71,10 @@ export default class Objects {
 	 * @param character
 	 */
 	addCharacter(character) {
-		this.createdObjects.createdCharacter.push(character);
+		this.createdObjects.character.push(character);
 		character.id = this.forId++;
 		this.groundMatrix[character.position.mPoint.x][character.position.mPoint.y].placed[character.id] = character;
-		
+		return character;
 	}
 	
 	/**
@@ -67,9 +82,31 @@ export default class Objects {
 	 * @param wall
 	 */
 	addWall(wall) {
-		this.createdObjects.createdWalls.push(wall);
+		this.createdObjects.wall.push(wall);
 		wall.id = this.forId++;
 		this.groundMatrix[wall.position.mPoint.x][wall.position.mPoint.y].placed[wall.id] = wall;
-		
+		return wall;
+	}
+	
+	/**
+	 * Создать декаль
+	 * @param decal
+	 */
+	addDecal(decal) {
+		this.createdObjects.decal.push(decal);
+		decal.id = this.forId++;
+		this.groundMatrix[decal.position.mPoint.x][decal.position.mPoint.y].placed[decal.id] = decal;
+		return decal;
+	}
+	
+	/**
+	 * Создать лут
+	 * @param loot
+	 */
+	addLoot(loot) {
+		this.createdObjects.loot.push(loot);
+		loot.id = this.forId++;
+		this.groundMatrix[loot.position.mPoint.x][loot.position.mPoint.y].placed[loot.id] = loot;
+		return loot;
 	}
 }

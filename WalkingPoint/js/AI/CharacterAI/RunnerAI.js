@@ -2,6 +2,7 @@ import BaseAI from "./BaseAI.js";
 import {Cell} from "../../Cell.js";
 import Interpolation from "../../Interpolation/Interpolation.js";
 import {MPoint} from "../../Point.js";
+import Queue from "../../Queue.js";
 
 export default class SimpleEnemyAI extends BaseAI {
 	/**
@@ -38,7 +39,7 @@ export default class SimpleEnemyAI extends BaseAI {
 					let currCell;
 					if (currCell = this.groundMatrix[i][j]) {
 						for (let obj in currCell.placed) {
-							if (currCell.placed[obj].decency < 101 && currCell.placed[obj].isDie === false && this.character !== currCell.placed[obj]) {
+							if (currCell.placed[obj].decency < 101 && currCell.placed[obj].isDie() === false && this.character !== currCell.placed[obj]) {
 								this.enemyNear[obj] = currCell.placed[obj];
 								return true;
 							}
@@ -56,68 +57,105 @@ export default class SimpleEnemyAI extends BaseAI {
 	 */
 	runAway() {
 		
+		//Если есть точка куда надо бежать, то
 		//Если противник все еще рядом, то бежим от него (них)
 		if (this.findEnemy()) {
-			//Позиция противника
-			let ePos;
-			//Свое текущее положение
-			let sPos = this.character.position.mPoint;
-			//Своя новая позиция
-			let nPos;
-			//Указывает на направление движения
-			let dir = {x: 0, y: 0};
-			let lastDir = null;
-			
-			//Уходим от каждого противника на шаг в другую сторону
-			for (let enemy in this.enemyNear) {
-				ePos = this.enemyNear[enemy].position.mPoint;
-				
-				//(enPos.y < myPos.y) ? newPos.y++ : newPos.y--;
-				// dir.x += (ePos.x < sPos.x) ? 1 : -1;
-				// dir.y += (ePos.y < sPos.y) ? 1 : -1;
-				
-				if (ePos.x === sPos.x)  { dir.x = 0; }
-				else if (ePos.x < sPos.x) { dir.x = 1; }
-				else if (ePos.x < sPos.x) { dir.x = -1; }
-				
-				if (ePos.y === sPos.y)  { dir.y = 0; }
-				else if (ePos.y < sPos.y) { dir.y = 1; }
-				else if (ePos.y < sPos.y) { dir.y = -1; }
-				
-				if (lastDir !== null) {
-					dir.x += lastDir.x;
-					dir.y += lastDir.y;
+			if (this.character.move === null) {
+				let newPos = this.findEscape(this.character.position);
+				if (newPos !== null) {
+					this.character.setTargetPosition(newPos.clone());
+					this.findPath();
 				}
-				
-				lastDir = {x: dir.x, y: dir.y};
 			}
-			
-			if (dir.x < dir.x) { dir.x = -1; }
-			else if (dir.x > dir.x) { dir.x = 1; }
-			
-			if (dir.y < dir.y) { dir.y = -1; }
-			else if (dir.y > dir.y) { dir.y = 1; }
-			
-			//Проверяем возможность отхода
-			nPos = Interpolation.findFreeCell(new MPoint(sPos.x + dir.x, sPos.y + dir.y), this.groundMatrix, sPos);
-			if (nPos)
-				this.character.setTargetPosition(nPos.clone());
-			
 		}
 		//Если противники ушли, то стоим и ждем их
 		else {
 			return false
 		}
 		
-		//Если есть точка куда надо бежать, то
-		if (this.character.targetPosition.length > 0) {
-			if (this.path === null) {
-				this.findPath();
-			}
-		}
+		
 		
 		//Продолжаем убегать
 		return true;
+	}
+	
+	// findEscape(position) {
+	//
+	// 	//Позиция противника
+	// 	let ePos;
+	// 	//Свое текущее положение
+	// 	let sPos = this.character.position.mPoint;
+	// 	//Своя новая позиция
+	// 	let nPos;
+	// 	//Указывает на направление движения
+	// 	let dir = {x: 0, y: 0};
+	// 	let lastDir = null;
+	// 	if (!position) {
+	// 		//Уходим от каждого противника на шаг в другую сторону
+	// 		for (let enemy in this.enemyNear) {
+	// 			ePos = this.enemyNear[enemy].mPoint;
+	// 			dir.x += ePos.x - sPos.x;
+	// 			dir.y += ePos.y - sPos.y;
+	// 		}
+	//
+	// 		dir.x = (dir.x < 0 && dir.x !== 0) ? -1 : 1;
+	// 		dir.y = (dir.y < 0 && dir.y !== 0) ? -1 : 1;
+	//
+	// 		nPos = Interpolation.findFreeCell(new MPoint(sPos.x + dir.x, sPos.y + dir.y), this.groundMatrix, sPos);
+	// 	}
+	// 	else {
+	// 		nPos = position;
+	// 	}
+	//
+	// 	let busyCells = 0;
+	// 	let checkBusyCells = 0;
+	// 	if (nPos !== null) {
+	// 		let frontier = new Queue();
+	// 		for (let cell of Interpolation.aroundPoints(nPos.mPoint, this.groundMatrix)) {
+	// 			if (cell.isBusy()) busyCells++;
+	// 			else frontier.put(cell);
+	// 		}
+	// 		while (!frontier.isDone()) {
+	// 			for (let cell of Interpolation.aroundPoints(frontier.get().mPoint, this.groundMatrix)) {
+	// 				if (cell.isBusy()) checkBusyCells++;
+	// 			}
+	// 			if (busyCells > checkBusyCells) {
+	// 				nPos = frontier.current;
+	// 				busyCells = checkBusyCells;
+	// 			}
+	// 		}
+	// 	}
+	// 	//Проверяем возможность отхода
+	// 	return nPos
+	//
+	// }
+	
+	findEscape(position) {
+		
+		let lt = new MPoint(position.x - this.character.visionRadius, position.y - this.character.visionRadius); 		//левая = верхняя
+		let rd = new MPoint(position.x + this.character.visionRadius, position.y + this.character.visionRadius); 		//правая = нижняя
+		
+		let arr = [];
+		let obj = {};
+		
+		let sum = 0;
+		
+		// for (let cell of Interpolation.aroundPoints(this.character.position, this.groundMatrix)) {
+		for (let cell of this.groundMatrix.forEach(lt, rd)) {
+			for (let subCell of Interpolation.aroundPoints(cell, this.groundMatrix)) {
+				for (let subSubCell of Interpolation.aroundPoints(subCell, this.groundMatrix)) {
+					sum += subSubCell.isBusy() ? subSubCell.getDecency(this.character) : 1;
+				}
+				sum += subCell.isBusy() ? subCell.getDecency(this.character)  : 1;
+			}
+			sum += cell.isBusy() ? cell.getDecency(this.character)  : 1;
+			//sum = cell.getDecency(this.character);
+			arr.push(sum);
+			obj[sum] = cell;
+			sum = 0;
+		}
+		let min = obj[Math.min(...arr)];
+		return min
 	}
 	
 	/**

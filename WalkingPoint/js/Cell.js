@@ -26,6 +26,8 @@ export class Cell {
 		this.border = {leftTop: null, rightDown: null};
 		this.type = "Cell";
 		this.id = Cell.CellId++;
+		/** @type GroundCell */
+		this.groundCell = null;
 		this.setBorder();
 	}
 	
@@ -116,17 +118,34 @@ export class GroundCell extends Cell {
 	}
 	
 	/**
-	 * Стоит ли на данной клетке что угодно? true, если занято.
-	 * @return {Boolean}
+	 * Получает "вес" клетки относительно объекта
+	 * @param object {SimpleObject}
 	 */
-	isBusy() {
-		return Object.keys(this.placed).length > 0;
+	getDecency(object) {
+		let result = object.decency;
+		for (let obj in this.placed)
+			result += (this.placed[obj].decency / object.decency);
+		
+		return result;
 	}
 	
-	// clone() {
-	// 	let clonedCell = super.clone();
-	// 	clonedCell.placed = this.placed;
-	// }
+	/**
+	 * Стоит ли на данной клетке что угодно? true, если занято.
+	 * @caller {SimpleObject}
+	 * @return {Boolean}
+	 */
+	isBusy(caller = null) {
+		let value = Object.keys(this.placed).length > 0;
+		if (caller)
+			value = (!(caller.id in this.placed) && value);
+		return value;
+	}
+	
+	clone() {
+		let cell = super.clone();
+		cell.groundCell = this;
+		return cell;
+	}
 }
 
 Cell.CellId = 0;

@@ -39,7 +39,7 @@ export default class SimpleEnemyAI extends BaseAI {
 					let currCell;
 					if (currCell = this.groundMatrix[i][j]) {
 						for (let obj in currCell.placed) {
-							if (currCell.placed[obj].decency > 50 && currCell.placed[obj].isDie === false && this.character !== currCell.placed[obj]) {
+							if (currCell.placed[obj].decency > 50 && currCell.placed[obj].isDie() === false && this.character !== currCell.placed[obj]) {
 								this.fowl = currCell.placed[obj];
 								this.character.setTargetPosition(currCell.clone(), true);
 								return true;
@@ -76,7 +76,7 @@ export default class SimpleEnemyAI extends BaseAI {
 			this.fowl.hit(0.005, this.character);
 			return true;
 		}
-		else if (!this.animating) {
+		else if (!this.character.isMoving()) {
 			this.findPath();
 		}
 		
@@ -107,7 +107,7 @@ export default class SimpleEnemyAI extends BaseAI {
 		//Есть есть точка, в которую будет осуществляться патрулирование, то идем в неё
 		if (this.patrolCell) {
 			//Если путь уже создан, то идем по нему
-			if (this.path !== null) {
+			if (this.character.move !== null) {
 				//Идем. Если путь пройден, то будем искать другую точку для патрулирования
 					if (!this.character.isMoving()) {
 						this.patrolCell = null;

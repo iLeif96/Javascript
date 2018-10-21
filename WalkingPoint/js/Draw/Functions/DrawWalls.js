@@ -3,7 +3,7 @@
  * @param ctx
  * @param scope
  * @param groundMatrix
- * @param wall {Wall}
+ * @param wall {wall}
  */
 export let drawWalls = function(ctx, scope, groundMatrix, wall) {
 	ctx.strokeStyle = "rgba(60,60,100,0.2)";

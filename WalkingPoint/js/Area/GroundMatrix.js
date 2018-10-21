@@ -122,18 +122,27 @@ export default class GroundMatrix extends Array {
 	
 	/**
 	 * Пробегает по всем клеткам в матрице. Сначала по столбцам, потом по строкам
-	 * @param startCell
-	 * @param endCell
+	 * @param startMPoint
+	 * @param endMPoint
 	 * @return {IterableIterator<*>}
 	 */
-	*forEach(startCell = new MPoint(0, 0), endCell = new MPoint(this.xLenght - 1, this.yLenght - 1)) {
-		for (let i = startCell.x; i <= endCell.x; i++) {
-			for (let j = startCell.y; j <= endCell.y; j++) {
-				yield this[i][j];
+	*forEach(startMPoint = new MPoint(0, 0), endMPoint = new MPoint(this.xLenght - 1, this.yLenght - 1)) {
+		for (let i = startMPoint.x; i <= endMPoint.x; i++) {
+			for (let j = startMPoint.y; j <= endMPoint.y; j++) {
+				if ((i >= 0 && i < this.xLenght) && (j >= 0 && j < this.yLenght))
+					yield this[i][j];
 			}
 		}
 	}
 	
+	/**
+	 * Проверяет занята ли данная клетка
+	 * @param mPoint {MPoint}
+	 * @param caller {SimpleObject}
+	 */
+	isBusy(mPoint, caller = null) {
+		return this[mPoint.x][mPoint.y].isBusy(caller);
+	}
 	//От этого надо избавиться
 	
 	/**
