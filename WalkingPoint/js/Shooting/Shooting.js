@@ -53,7 +53,7 @@ export default class Shooting extends Periodic {
 	 */
 	solvePath() {
 		let tP = this.targetPosition.cPoint;
-		let sP = this.object.position.cPoint;
+		let sP = this.object.position.cPoint.clone();
 		let lastPos = sP.clone();
 		let path = null;
 		
@@ -74,7 +74,7 @@ export default class Shooting extends Periodic {
 		}
 		else if (!this.path.isDone()) {
 			cell = this.path.now().clone();
-			this.anim = new Animation(this.path.nextPath(), this.object.speed, null);
+			this.anim = new Animation(this.path.nextPath(), this.object.longWeapon.bulletSpeed, null);
 		}
 		//Удаляем объект передвижения
 		else {
@@ -88,7 +88,7 @@ export default class Shooting extends Periodic {
 		// 	cell.groundCell = this.groundMatrix[cell.x][cell.y];
 		// }
 		
-		this.bullet.position.cPoint.setPosition(cell);
+		this.bullet.position.cPoint.setPositionFromPoint(cell);
 		
 		//this.afterFunc(cell, this);
 		

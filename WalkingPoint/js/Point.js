@@ -27,6 +27,13 @@ class Point {
 		
 		return this;
 	}
+	
+	setPositionFromPoint(point) {
+		this.x = point.x;
+		this.y = point.y;
+		
+		return this;
+	}
 }
 
 /**

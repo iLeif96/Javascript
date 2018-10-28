@@ -11,6 +11,8 @@ import Bullet from "./Decals/Bullet.js";
 
 import Weapon from "./PhysicalObjects/Loot/Weapons/Weapon.js";
 
+import Camera from "./Camera.js"
+
 /**
  * Основной класс для создания и хранения объектов;
  */
@@ -47,11 +49,13 @@ export default class Objects {
 		};
 		
 		/**
-		 Список доступных декалей
+		 Список доступного лута
 		 */
 		this.loot = {
 			Weapon: Weapon,
 		};
+		
+		//this.Camera = Camera;
 		
 		/**
 		 * Список созданных объектов
@@ -61,6 +65,7 @@ export default class Objects {
 			decal: [],
 			wall: [],
 			loot: [],
+			camera: [],
 		};
 		
 		this.forId = 0;
@@ -108,5 +113,15 @@ export default class Objects {
 		loot.id = this.forId++;
 		this.groundMatrix[loot.position.mPoint.x][loot.position.mPoint.y].placed[loot.id] = loot;
 		return loot;
+	}
+	
+	/**
+	 * Добавить камеру
+	 * @param camera Camera
+	 */
+	addCamera(camera) {
+		this.createdObjects.camera.push(camera);
+		camera.id = this.forId++;
+		return camera;
 	}
 }

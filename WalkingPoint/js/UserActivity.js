@@ -17,6 +17,7 @@ export default class UserActivity {
 	constructor(canvas, scope, groundMatrix, events, objects) {
 		this.canvas = canvas;
 		this.groundMatrix = groundMatrix;
+		this.scope = scope;
 		this.events = events;
 		this.objects = objects;
 		
@@ -32,6 +33,10 @@ export default class UserActivity {
 		 */
 		this.actions = {
 			shoot: 17,
+			up: 87,
+			left: 65,
+			right: 68,
+			down: 83,
 		};
 		
 		this.setKeysPress();
@@ -57,29 +62,65 @@ export default class UserActivity {
 	 */
 	movePlayerOnClick(player) {
 		this.events.addEvent("click", this.canvas, (ev) => {
-			//ev.preventDefault();
-			let targetPos = this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY()));
-			player.doShot(targetPos, this.groundMatrix, this.objects);
-				//player.setTargetPosition(this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), true);
-				
-			//player.moveTo(new Move(player, targetPos, this.groundMatrix));
-			//return false;
-			//console.log(player.targetPosition);
-		});
-	}
-	
-	/**
-	 * При двойном клике мышкой стреляем в цель
-	 * @param player {Player}
-	 */
-	shootPlayerOnDblClick(player) {
-		this.events.addEvent("dblclick", this.canvas, (ev) => {
 			ev.preventDefault();
-			let targetPos = this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY()));
+			let targetPoint = new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY());
+			if (this.scope.isometric)
+				targetPoint = this.scope.pointFromIsometric(targetPoint);
+			let targetPos = this.groundMatrix.getCell(targetPoint);
 			player.moveTo(new Move(player, targetPos, this.groundMatrix));
 			return false;
 			//console.log(player.targetPosition);
 		});
+		
+	}
+	
+	movePlayerOnKeys(player) {
+		let move = null;
+		this.events.addEvent("keydown", document.body, (ev) => {
+			let toCell = player.position.clone();
+			
+			toCell.mPoint.x += (this.actions.right in this.keysPress) - (this.actions.left in this.keysPress);
+			toCell.mPoint.y += (this.actions.down in this.keysPress) - (this.actions.up in this.keysPress);
+			if (this.groundMatrix.isInSpace(toCell.mPoint) && !toCell.mPoint.compare(player.position.mPoint)) {
+				move = new Move(player, toCell, this.groundMatrix);
+				player.moveTo(move);
+			}
+		})
+	}
+	/**
+	 * При двойном клике мышкой стреляем в цель
+	 * @param player {Player}
+	 */
+	shootPlayerOnClick(player) {
+		let mousedowm = false;
+		let event = null;
+		let eve = this.events.addEvent("mousedown", this.canvas, (ev) => {
+			mousedowm = true;
+			event = ev;
+			//ev.preventDefault();
+			//player.setTargetPosition(this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY())), true);
+			
+			//player.moveTo(new Move(player, targetPos, this.groundMatrix));
+			//return false;
+			//console.log(player.targetPosition);
+		});
+		
+		this.events.addEvent("mousemove", this.canvas, (ev) => {
+			event = ev;
+		})
+		
+		this.events.addEvent("mouseup", this.canvas, (ev) => {
+			//this.events.removeEvent(eve, this.canvas);
+			event = null;
+			mousedowm = false;
+		});
+		setInterval(() =>
+		{
+			if (mousedowm && event !== null) {
+				let targetPos = this.groundMatrix.getCell(new CPoint(event.offsetX.getNormalX(), event.offsetY.getNormalY()));
+				player.doShot(targetPos, this.groundMatrix, this.objects);
+			}
+		}, 100);
 	}
 	
 	/**

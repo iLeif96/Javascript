@@ -2,6 +2,7 @@ import {drawGround} from "./Functions/DrawGround.js";
 import {drawChar} from "./Functions/DrawCharacter.js";
 import {drawWalls} from "./Functions/DrawWalls.js";
 import {drawShadow} from "./Functions/DrawShadow.js";
+import {drawBullet} from "./Functions/DrawBullet.js";
 import Interpolation from "../Interpolation/Interpolation.js";
 
 export default class Draw {
@@ -36,6 +37,11 @@ export default class Draw {
 			this.createdObjects.character.forEach((character) => {
 				drawShadow(this.canvas.charactersContext, this.scope, this.groundMatrix, character, 1);
 				drawChar(this.canvas.charactersContext, this.scope, this.groundMatrix, character);
+			});
+			
+			//Рисуем декали
+			this.createdObjects.decal.forEach((decal) => {
+				drawBullet(this.canvas.charactersContext, this.scope, this.groundMatrix, decal);
 			});
 			
 			this.canvas.charactersChanges = false;

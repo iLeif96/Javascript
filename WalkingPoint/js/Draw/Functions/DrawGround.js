@@ -1,4 +1,6 @@
 import {MPoint} from "../../Point.js";
+import {square} from "./WhatWeDraw.js";
+
 
 /**
  *  Рисует поле
@@ -18,8 +20,12 @@ export let drawGround = function(ctx, scope, gM) {
 	// ctx.shadowBlur = 0.5;
 	// ctx.shadowColor = "rgb(100,100,100)";
 	for (let cell of gM.forEach()) {
+		// let pos = scope.isometric ? scope.pointToDraw(scope.pointToIsometric(cell.cPoint)) : scope.pointToDraw(cell.cPoint);
+		square(cell.cPoint, ctx, scope);
+		ctx.stroke();
+		//ctx.fillRect(pos.x, pos.y, scope.scale * scope.cell, scope.scale * scope.cell);
+		// ctx.strokeRect(pos.x, pos.y, scope.scale * scope.cell, scope.scale * scope.cell);
 		// ctx.fillRect(cell.getX(), cell.getY(), (scope.cell * scope.scale), (scope.cell * scope.scale));
-		ctx.strokeRect(cell.getX(), cell.getY(), (scope.cell * scope.scale), (scope.cell * scope.scale));
 		// ctx.stroke();
 	}
 	

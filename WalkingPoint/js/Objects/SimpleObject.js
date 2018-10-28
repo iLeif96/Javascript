@@ -17,7 +17,7 @@ export default class SimpleObject extends Periodic {
 		this.decency = 0;
 		this.needRedraw = true;
 		this.actions = {};
-		
+		this.onGround = true;
 		//this.move = null;
 		
 	}
@@ -50,7 +50,7 @@ export default class SimpleObject extends Periodic {
 			move.afterFunc = function (context) {
 				if (context.currentPosition.groundCell.isBusy(context.object)) {
 					context.resolvePath();
-				}
+				} 
 				context.object.position = context.currentPosition;
 			};
 			

@@ -136,6 +136,14 @@ export default class GroundMatrix extends Array {
 	}
 	
 	/**
+	 * Проверяет находится ли точка внутри пространства матрицы
+	 * @param mPoint {MPoint}
+	 */
+	isInSpace(mPoint) {
+		return ((mPoint.x >= 0 && mPoint.x < this.xLenght) && (mPoint.y >= 0 && mPoint.y < this.yLenght))
+	}
+	
+	/**
 	 * Проверяет занята ли данная клетка
 	 * @param mPoint {MPoint}
 	 * @param caller {SimpleObject}

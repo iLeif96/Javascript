@@ -1,4 +1,6 @@
 'use strict';
+import Camera from "../Objects/Camera.js";
+
 /**
  * Задает параметры поля для отрисовки
  */
@@ -9,6 +11,8 @@ export default class Scope {
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.scale = 1;
+		
+		this.view = Camera.view.cartesian;
 		
 		this.wStart = 0;
 		this.hStart = 0;
@@ -54,6 +58,33 @@ export default class Scope {
 		this.wStart = this.canvas.canvasContainer.offsetHeight;
 		this.canvas.refresh();
 		
+	}
+	
+	/**
+	 * Переводи координату в изометрический вид
+	 * @param cPoint {CPoint}
+	 */
+	pointToIsometric(cPoint) {
+		return cPoint.clone().setPosition(cPoint.x - cPoint.y, (cPoint.x + cPoint.y) / 2);
+	}
+	
+	/**
+	 * Переводи координату в изометрический вид
+	 * @param cPoint {CPoint}
+	 * @return CPoint
+	 */
+	pointFromIsometric(cPoint) {
+		return cPoint.clone().setPosition((2 * cPoint.y + cPoint.x) / 2, (2 * cPoint.y - cPoint.y) / 2);
+	}
+	
+	/**
+	 * Возвращает экранные координаты точки
+	 * @param cPoint {CPoint}
+	 * @return CPoint
+	 */
+	pointToDraw(cPoint) {
+		
+		return cPoint.clone().setPosition(this.getX(cPoint.x), this.getY(cPoint.y))
 	}
 	
 	/**

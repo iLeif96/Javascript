@@ -47,13 +47,18 @@ export default function Tick(global) {
 				global.draw.canvas.charactersChanges = true;
 				object.needRedraw = false;
 			}
-			let oldPlace = global.groundMatrix[object.lastPosition.mPoint.x][object.lastPosition.mPoint.y];
-			let newPlace = global.groundMatrix[object.position.mPoint.x][object.position.mPoint.y];
-			if (oldPlace !== newPlace) {
-				newPlace.placed[object.id] = character;
-				if (oldPlace.placed[object.id]) {
-					delete oldPlace.placed[object.id];
+			if (object.onGround) {
+				let oldPlace = global.groundMatrix[object.lastPosition.mPoint.x][object.lastPosition.mPoint.y];
+				let newPlace = global.groundMatrix[object.position.mPoint.x][object.position.mPoint.y];
+				if (!oldPlace.mPoint.compare(newPlace.mPoint)) {
+					newPlace.placed[object.id] = object;
+					if (oldPlace.placed[object.id])
+						delete oldPlace.placed[object.id];
+					
+					object.lastPosition = object.position.clone();
 				}
+			}
+			else {
 				object.lastPosition = object.position.clone();
 			}
 		});

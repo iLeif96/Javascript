@@ -5,6 +5,7 @@ import Global from "./Global.js";
 import tick from "./Tick.js";
 import Interpolation from "./Interpolation/Interpolation.js";
 import Time from "./Time.js";
+import Camera from "./Objects/Camera.js";
 
 /**
  * Декларация глобального объекта
@@ -16,7 +17,7 @@ let main = function () {
 	/*
 	 * Объявление глобального объекта
 	 */
-	global = new Global();
+	window.global = global = new Global();
 	setStartingProperties();
 	
 	// global.userActivity.gMTest(global.groundMatrix, global.draw);
@@ -28,11 +29,14 @@ let main = function () {
 	// mid.x = 3; mid.y = 2;
 	let player = new global.objects.chars.Player("Васяныч", global.groundMatrix.getCell(mid));
 	global.userActivity.movePlayerOnClick(player);
-	global.userActivity.shootPlayerOnDblClick(player);
+	// global.userActivity.movePlayerOnKeys(player);
+	//global.userActivity.shootPlayerOnDblClick(player);
 	//global.AI.addAI(player, global.AI.BaseAI);
 	global.objects.addCharacter(player);
 	
-	
+	let camera = new Camera(player.position.cPoint, global.scope, {view: Camera.view.isometric, target: player});
+	global.objects.addCamera(camera);
+	camera.activate();
 	
 	// let runner0 = new global.objects.chars.Runner("Болт", global.groundMatrix.getCell(new MPoint(4, 7)), 200);
 	// //global.userActivity.movePlayerOnClick(enemy0);
