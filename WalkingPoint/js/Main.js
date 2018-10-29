@@ -34,8 +34,13 @@ let main = function () {
 	//global.AI.addAI(player, global.AI.BaseAI);
 	global.objects.addCharacter(player);
 	
-	let camera = new Camera(player.position.cPoint, global.scope, {view: Camera.view.isometric, target: player});
+	let camera = new Camera(player.position.cPoint, global.scope, true, {
+		view: Camera.view.cartesian,
+		target: player,
+		followMode: Camera.followMode.simpleFollow,
+	});
 	global.objects.addCamera(camera);
+	global.userActivity.zoomOnScroll(camera, global.scope);
 	camera.activate();
 	
 	// let runner0 = new global.objects.chars.Runner("Болт", global.groundMatrix.getCell(new MPoint(4, 7)), 200);

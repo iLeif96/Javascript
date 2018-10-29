@@ -1,18 +1,20 @@
 'use strict';
-import Camera from "../Objects/Camera.js";
+
+import Enums from "../Enums.js";
+import {Events} from "../Events.js";
 
 /**
  * Задает параметры поля для отрисовки
  */
 export default class Scope {
-	constructor(canvas, events) {
+	constructor(canvas) {
 		this.canvas = canvas;
 		this.cell = 35;
 		this.deltaX = 0;
 		this.deltaY = 0;
 		this.scale = 1;
 		
-		this.view = Camera.view.cartesian;
+		this.view = Enums.camera.view.cartesian;
 		
 		this.wStart = 0;
 		this.hStart = 0;
@@ -20,16 +22,19 @@ export default class Scope {
 		this.width = 0;
 		this.height = 0;
 		
-		this.initialisation(events);
+		this.wMid = this.width / 2;
+		this.hMid = this.height / 2;
+		
+		this.initialisation();
 	}
 	
 	/**
 	 * Обновить данные
 	 */
-	initialisation(events) {
+	initialisation() {
 		this.setCanvasSize();
 		this.refresh();
-		events.addEvent("resize", this.canvas, this.resize);
+		Events.addEvent("resize", this.canvas, this.resize);
 	}
 	
 	/**
@@ -45,6 +50,8 @@ export default class Scope {
 	resize() {
 		this.width = this.canvas.width;
 		this.height = this.canvas.height;
+		this.wMid = this.width / 2;
+		this.hMid = this.height / 2;
 		this.canvas.globalChanges = true;
 	}
 	
@@ -83,7 +90,6 @@ export default class Scope {
 	 * @return CPoint
 	 */
 	pointToDraw(cPoint) {
-		
 		return cPoint.clone().setPosition(this.getX(cPoint.x), this.getY(cPoint.y))
 	}
 	
@@ -100,17 +106,26 @@ export default class Scope {
 		return ((y + this.deltaY) * this.scale) ;
 	};
 	
+	/**
+	 * Переводит точку из экранных координат в игровые
+	 * @param cPoint
+	 * @return {*}
+	 */
+	pointToNormal(cPoint) {
+		return cPoint.clone().setPosition(this.getNormalX(cPoint.x), this.getNormalY(cPoint.y))
+	}
+	
 	 /**
 	 * Получает координату с обнуленным масштаброванием и смещением по X;
 	 */
 	getNormalX(x) {
-		return (x / this.scale - this.deltaX)  ;
+		return ((x / this.scale) - this.deltaX);
 	};
 	/**
 	 * Получает координату с обнуленным масштаброванием и смещением по Y;
 	 */
 	getNormalY(y) {
-		return (y / this.scale - this.deltaY) ;
+		return ((y / this.scale) - this.deltaY);
 	};
 };
 

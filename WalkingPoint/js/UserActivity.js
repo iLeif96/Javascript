@@ -2,6 +2,7 @@ import {Events} from "./Events.js";
 import {CPoint} from "./Point.js";
 import Interpolation from "./Interpolation/Interpolation.js";
 import Move from "./Moving/Move.js";
+import Enums from "./Enums.js";
 
 /**
  * Класс, отвечающий за все действия пользователя (мышь, клавиатура)
@@ -11,14 +12,12 @@ export default class UserActivity {
 	 * @param {UserCanvas} canvas - для приема событий
 	 * @param {GroundMatrix} groundMatrix - поле
 	 * @param {Scope} scope - для перевода координат
-	 * @param {Events} events - события
 	 * @param {Object} objects - объекты
 	 */
-	constructor(canvas, scope, groundMatrix, events, objects) {
+	constructor(canvas, scope, groundMatrix, objects) {
 		this.canvas = canvas;
 		this.groundMatrix = groundMatrix;
 		this.scope = scope;
-		this.events = events;
 		this.objects = objects;
 		
 		/**
@@ -46,11 +45,11 @@ export default class UserActivity {
 	 * Записывает все нажатые в текущий момент клавиши
 	 */
 	setKeysPress() {
-		this.events.addEvent("keydown", document.body, (ev) => {
+		Events.addEvent("keydown", document.body, (ev) => {
 			this.keysPress[ev.which] = true;
 		});
 		
-		this.events.addEvent("keyup", document.body, (ev) => {
+		Events.addEvent("keyup", document.body, (ev) => {
 			if (ev.which in this.keysPress)
 				delete this.keysPress[ev.which];
 		})
@@ -61,11 +60,12 @@ export default class UserActivity {
 	 * @param player {Player}
 	 */
 	movePlayerOnClick(player) {
-		this.events.addEvent("click", this.canvas, (ev) => {
+		Events.addEvent("click", this.canvas, (ev) => {
 			ev.preventDefault();
 			let targetPoint = new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY());
-			if (this.scope.isometric)
+			if (this.scope.view === Enums.camera.view.isometric)
 				targetPoint = this.scope.pointFromIsometric(targetPoint);
+			
 			let targetPos = this.groundMatrix.getCell(targetPoint);
 			player.moveTo(new Move(player, targetPos, this.groundMatrix));
 			return false;
@@ -74,9 +74,20 @@ export default class UserActivity {
 		
 	}
 	
+	/**
+	 * Осуществляет зуммирование
+	 * @param camera {Camera}
+	 * @param scope {Scope}
+	 */
+	zoomOnScroll(camera, scope) {
+		Events.addEvent("wheel", this.canvas, (ev) => {
+			camera.setScale(- ev.deltaY / 1000,  new CPoint(ev.offsetX, ev.offsetY));
+		});
+	}
+	
 	movePlayerOnKeys(player) {
 		let move = null;
-		this.events.addEvent("keydown", document.body, (ev) => {
+		Events.addEvent("keydown", document.body, (ev) => {
 			let toCell = player.position.clone();
 			
 			toCell.mPoint.x += (this.actions.right in this.keysPress) - (this.actions.left in this.keysPress);
@@ -94,7 +105,7 @@ export default class UserActivity {
 	shootPlayerOnClick(player) {
 		let mousedowm = false;
 		let event = null;
-		let eve = this.events.addEvent("mousedown", this.canvas, (ev) => {
+		let eve = Events.addEvent("mousedown", this.canvas, (ev) => {
 			mousedowm = true;
 			event = ev;
 			//ev.preventDefault();
@@ -105,12 +116,12 @@ export default class UserActivity {
 			//console.log(player.targetPosition);
 		});
 		
-		this.events.addEvent("mousemove", this.canvas, (ev) => {
+		Events.addEvent("mousemove", this.canvas, (ev) => {
 			event = ev;
 		})
 		
-		this.events.addEvent("mouseup", this.canvas, (ev) => {
-			//this.events.removeEvent(eve, this.canvas);
+		Events.addEvent("mouseup", this.canvas, (ev) => {
+			//Events.removeEvent(eve, this.canvas);
 			event = null;
 			mousedowm = false;
 		});
@@ -129,7 +140,7 @@ export default class UserActivity {
 	 * @param draw {Draw}
 	 */
 	moveTest(player, draw) {
-		this.events.addEvent("click", this.canvas, (ev) => {
+		Events.addEvent("click", this.canvas, (ev) => {
 			draw.clear(draw.canvas.testsCanvas);
 			let fPos = this.groundMatrix.getCell(new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY()));
 			Interpolation.findWaySimple(player.position, fPos, this.groundMatrix, draw);
@@ -143,7 +154,7 @@ export default class UserActivity {
 	 * @param draw {Draw}
 	 */
 	gMTest(gM, draw) {
-		this.events.addEvent("click", this.canvas, (ev) => {
+		Events.addEvent("click", this.canvas, (ev) => {
 			let x = gM[0][0].cPoint.x;
 			let y = gM[0][0].cPoint.y;
 			for (let cell of gM.forEach()) {

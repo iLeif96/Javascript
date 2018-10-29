@@ -11,7 +11,7 @@ import Bullet from "./Decals/Bullet.js";
 
 import Weapon from "./PhysicalObjects/Loot/Weapons/Weapon.js";
 
-import Camera from "./Camera.js"
+// import Camera from "./Camera.js"
 
 /**
  * Основной класс для создания и хранения объектов;

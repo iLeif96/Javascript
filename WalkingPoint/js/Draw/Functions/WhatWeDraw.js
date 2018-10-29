@@ -1,5 +1,6 @@
 import {CPoint} from "../../Point.js";
-import Camera from "../../Objects/Camera.js";
+import Enums from "../../Enums.js";
+// import Camera from "../../Objects/Camera.js";
 /**
  * Задает квадрат для отриисовки в виде пути для canvas
  * @param pos {CPoint}
@@ -8,9 +9,9 @@ import Camera from "../../Objects/Camera.js";
  */
 export let square = function (pos, ctx, scope) {
 	let pos1 = pos.clone(),
-		pos2 = new CPoint(pos1.x + scope.cell * scope.scale, pos1.y),
-		pos3 = new CPoint(pos1.x + scope.cell * scope.scale, pos1.y + scope.cell * scope.scale),
-		pos4 = new CPoint(pos1.x, pos1.y + scope.cell * scope.scale);
+		pos2 = new CPoint(pos1.x + scope.cell, pos1.y),
+		pos3 = new CPoint(pos1.x + scope.cell, pos1.y + scope.cell),
+		pos4 = new CPoint(pos1.x, pos1.y + scope.cell);
 	
 	comparisonCoordinates(scope, pos1, pos2, pos3, pos4);
 	
@@ -29,7 +30,7 @@ export let square = function (pos, ctx, scope) {
  */
 export let comparisonCoordinates = function(scope, ...args) {
 	for (let i = 0; i < args.length; i++) {
-		if (scope.view === Camera.view.isometric)
+		if (scope.view === Enums.camera.view.isometric)
 			args[i].setPositionFromPoint(scope.pointToIsometric(args[i]));
 		
 		args[i].setPositionFromPoint(scope.pointToDraw(args[i]));

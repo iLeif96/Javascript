@@ -68,19 +68,34 @@ export default class Draw {
 	};
 	
 	debugDraw(cell) {
-			this.canvas.testsContext.strokeStyle = "rgb(70, 50, 50)";
-			this.canvas.testsContext.fillStyle = "rgb(50, 70, 50)";
-			this.canvas.testsContext.beginPath();
-			this.canvas.testsContext.fillRect(
-				cell.getX(this.groundMatrix), cell.getY(this.groundMatrix),
-				this.scope.scale * this.scope.cell, this.scope.scale * this.scope.cell);
-			this.canvas.testsContext.stroke();
+			// this.canvas.testsContext.strokeStyle = "rgb(70, 50, 50)";
+			// this.canvas.testsContext.fillStyle = "rgb(50, 70, 50)";
+			// this.canvas.testsContext.beginPath();
+			// this.canvas.testsContext.fillRect(
+			// 	cell.getX(this.groundMatrix), cell.getY(this.groundMatrix),
+			// 	this.scope.scale * this.scope.cell, this.scope.scale * this.scope.cell);
+			// this.canvas.testsContext.stroke();
+		let minX = this.scope.width / 2;
+		let minY = this.scope.height / 2;
+	
+		let ctx = this.canvas.testsContext;
+		ctx.strokeStyle = "rgb(70, 50, 50)";
+		
+		ctx.beginPath();
+		ctx.moveTo(minX, 0);
+		ctx.lineTo(minX, this.scope.height);
+		ctx.stroke();
+		
+		ctx.beginPath();
+		ctx.moveTo(0, minY);
+		ctx.lineTo(this.scope.width, minY);
+		ctx.stroke();
 		
 	}
 	
 	setRequestAnimationFrame() {
 		this.draw();
-		//this.debugDraw();
+		// this.debugDraw();
 		requestAnimationFrame(this.draw.bind(this));
 	}
 	

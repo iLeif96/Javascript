@@ -1,4 +1,4 @@
-import {EventAbleObject} from "./Events.js";
+import {EventAbleObject, Events} from "./Events.js";
 
 /**
  * Класс нужен для организации хранения информации об объектах HTML: canvas
@@ -6,10 +6,9 @@ import {EventAbleObject} from "./Events.js";
 
 export default class UserCanvas extends EventAbleObject{
 	/**
-	 * @param events {Events} - для задания события обновления размера
 	 * @param container {String} - название контейнера
 	 */
-	constructor(events, container = "canvasContainer") {
+	constructor(container = "canvasContainer") {
 		super();
 		/**
 		 * Контейнер, в котором хранятся холсты
@@ -102,13 +101,13 @@ export default class UserCanvas extends EventAbleObject{
 		this.width = 0;
 		this.height = 0;
 		
-		this.initialisation(events, container);
+		this.initialisation(container);
 	}
 	
 	/**
 	 * Инициализация объектов
 	 */
-	initialisation(events, container) {
+	initialisation(container) {
 		this.canvasContainer = document.getElementById(container);
 		
 		this.groundCanvas = this.canvasContainer.children.groundCanvas;
@@ -123,7 +122,7 @@ export default class UserCanvas extends EventAbleObject{
 		
 		this.refresh();
 		
-		events.addEvent("resize", this, this.resize);
+		Events.addEvent("resize", this, this.resize);
 		
 		/*
 			Нужно для задания функции-обработчика

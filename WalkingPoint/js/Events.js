@@ -2,44 +2,26 @@
  * Отвечает за обработку действий пользователя
  */
 export class Events {
-	constructor() {
-		/**
-		 * Список всех объектов с соответсвующими им событиями
-		 */
-		this.listOfObjects = {};
-		
-		/**
-		 * Список всех событий с соответсвующими им объектами
-		 */
-		this.listOfEvents = {};
-		
-		/**
-		 * Идентификатор новосозанного события
-		 * @type {number}
-		 */
-		this.eventID = -1;
-	}
-	
 	/**
 	 * Добавить новый обработчик событий
 	 * @param {String} event - Имя события
 	 * @param {object} object - Объект события
 	 * @param {Function} func - Функция - обработчик
 	 */
-	addEvent(event, object, func) {
+	static addEvent(event, object, func) {
 		if (!object.addEventListener) {
 			console.log("Для объекта", object, "невозможно добавить событие");
 		}
 		
-		this.eventID++;
-		if (!this.listOfObjects[object]) {
-			this.listOfObjects[object] = {};
+		Events.eventID++;
+		if (!Events.listOfObjects[object]) {
+			Events.listOfObjects[object] = {};
 		}
-		this.listOfObjects[object][this.eventID] = {event, func};
-		this.listOfEvents[this.eventID] = {event, object, func};
+		Events.listOfObjects[object][Events.eventID] = {event, func};
+		Events.listOfEvents[Events.eventID] = {event, object, func};
 		object.addEventListener(event, func, true);
 		
-		return this.eventID;
+		return Events.eventID;
 	}
 	
 	/**
@@ -47,27 +29,27 @@ export class Events {
 	 * @param {number} eventID - идентификатор события
 	 * @param {object} object - требуемый объект
 	 */
-	removeEvent(eventID, object) {
-		if (!this.listOfEvents[eventID]) {
+	static removeEvent(eventID, object) {
+		if (!Events.listOfEvents[eventID]) {
 			console.log("Такого события не существует");
 			return;
 		}
 		
 		if (!object) {
-			let evObj = this.listOfEvents[eventID];
+			let evObj = Events.listOfEvents[eventID];
 			evObj.object.removeEventListener(evObj.event, evObj.func, true);
-			delete this.listOfObjects[evObj.object][eventID];
-			delete this.listOfEvents[eventID];
+			delete Events.listOfObjects[evObj.object][eventID];
+			delete Events.listOfEvents[eventID];
 		}
 		else {
-			let evObj = this.listOfObjects[object][eventID];
+			let evObj = Events.listOfObjects[object][eventID];
 			object.removeEventListener(evObj.event, evObj.func, true);
-			delete this.listOfObjects[object][eventID];
-			delete this.listOfEvents[eventID];
+			delete Events.listOfObjects[object][eventID];
+			delete Events.listOfEvents[eventID];
 		}
 		
-		if (Object.keys(this.listOfObjects[object]).length === 0) {
-			delete this.listOfObjects[object];
+		if (Object.keys(Events.listOfObjects[object]).length === 0) {
+			delete Events.listOfObjects[object];
 		}
 	}
 	
@@ -75,16 +57,32 @@ export class Events {
 	 * Очистить от всех событий объект (возможно нужно для очистки памяти)
 	 * @param object
 	 */
-	clearObject(object) {
-		if (!this.listOfObjects[object]) {
+	static clearObject(object) {
+		if (!Events.listOfObjects[object]) {
 			console.log("Объект не найден");
 			return;
 		}
-		for (let eventID in this.listOfObjects[object]) {
-			this.removeEvent(eventID, object)
+		for (let eventID in Events.listOfObjects[object]) {
+			Events.removeEvent(eventID, object)
 		}
 	}
 }
+
+/**
+ * Список всех объектов с соответсвующими им событиями
+ */
+Events.listOfObjects = {};
+
+/**
+ * Список всех событий с соответсвующими им объектами
+ */
+Events.listOfEvents = {};
+
+/**
+ * Идентификатор новосозанного события
+ * @type {number}
+ */
+Events.eventID = -1;
 
 /**
  * Класс, позволяющий объекту работать с событиями
@@ -115,3 +113,4 @@ export class EventAbleObject {
 		}
 	}
 }
+
