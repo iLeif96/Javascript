@@ -64,7 +64,7 @@ export default class UserActivity {
 			ev.preventDefault();
 			let targetPoint = new CPoint(ev.offsetX.getNormalX(), ev.offsetY.getNormalY());
 			if (this.scope.view === Enums.camera.view.isometric)
-				targetPoint = this.scope.pointFromIsometric(targetPoint);
+				targetPoint.setPositionFromPoint(this.scope.pointFromIsometric(targetPoint));
 			
 			let targetPos = this.groundMatrix.getCell(targetPoint);
 			player.moveTo(new Move(player, targetPos, this.groundMatrix));

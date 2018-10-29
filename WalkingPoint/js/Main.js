@@ -35,7 +35,7 @@ let main = function () {
 	global.objects.addCharacter(player);
 	
 	let camera = new Camera(player.position.cPoint, global.scope, true, {
-		view: Camera.view.cartesian,
+		view: Camera.view.isometric,
 		target: player,
 		followMode: Camera.followMode.simpleFollow,
 	});

@@ -34,6 +34,8 @@ export default class Camera extends SimpleObject {
 		this.type = Camera;
 		this.baseType = Camera;
 		
+		this.scaleChange = false;
+		
 		this.scale = 0;
 		this.deltaX = 0;
 		this.deltaY = 0;
@@ -58,11 +60,20 @@ export default class Camera extends SimpleObject {
 	 * Расчитывает смещение поля относительно камеры
 	 */
 	solveDelta() {
+		if (this.scaleChange === true) {
+			this.scaleChange = false;
+			return;
+		}
+		
 		if ((this.followMode === Camera.followMode.noneFollow) || this.target === null) {
 			return;
 		}
 		
 		this.position.setPositionFromPoint(this.target.position.cPoint);
+		
+		if (this.view === Camera.view.isometric)
+			this.position.setPositionFromPoint(this.scope.pointToIsometric(this.position));
+		
 		let midX = this.scope.wMid;
 		let midY = this.scope.hMid;
 		
@@ -74,7 +85,7 @@ export default class Camera extends SimpleObject {
 		this.deltaX = midX / scale - (this.position.x + this.scope.cell / 2);
 		this.deltaY = midY / scale - (this.position.y + this.scope.cell / 2);
 		
-		this.scope.canvas.globalChanges = true;
+		
 	}
 	
 	/**
@@ -101,11 +112,18 @@ export default class Camera extends SimpleObject {
 			
 			this.position.setPositionFromPoint(this.target.position.cPoint);
 			
+			if (this.view === Camera.view.isometric)
+				this.position.setPositionFromPoint(this.scope.pointToIsometric(this.position));
+			
 			deltaX = midX / this.scale - (this.position.x + this.scope.cell / 2);
 			deltaY = midY / this.scale - (this.position.y + this.scope.cell / 2);
 		}
 		else if (position !== null) {
+			
 			this.position.setPositionFromPoint(position);
+			
+			// if (this.view === Camera.view.isometric)
+			// 	this.position.setPositionFromPoint(this.position);
 			
 			let oldX = this.position.x / this.scale;
 			let oldY = this.position.y / this.scale;
@@ -129,6 +147,8 @@ export default class Camera extends SimpleObject {
 		
 		this.deltaX = deltaX;
 		this.deltaY = deltaY;
+		
+		this.scaleChange = true;
 	}
 	
 	applyFromScope(scope) {
